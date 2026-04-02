@@ -1,97 +1,82 @@
 /* ======== 全局背景层 ======== */
-.custom-bg {
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  z-index: 0; opacity: 1;
-}
-.home-page {
-  position: relative; z-index: 1; min-height: 100vh;
-  padding: 40rpx 32rpx 0; overflow: hidden; box-sizing: border-box;
-}
+.custom-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; opacity: 1; }
+.home-page { position: relative; z-index: 1; min-height: 100vh; padding: 40rpx 32rpx 0; overflow: hidden; box-sizing: border-box; }
 
-/* ======== 1. 情绪大标题 ======== */
 .headline-section { margin-top: 10rpx; margin-bottom: 50rpx; }
-.headline-sub {
-  font-size: 28rpx; color: #888888; margin-bottom: 16rpx;
-  background: rgba(0,0,0,0.04); display: inline-block; padding: 6rpx 20rpx; border-radius: 999rpx;
-}
-.headline-main {
-  font-size: 64rpx; font-weight: 900; color: #111111;
-  letter-spacing: 2rpx; line-height: 1.3;
-}
-/* 底牌揭晓的渐变仪轨感 */
-.hl-gradient {
-  background: linear-gradient(120deg, #1A4BFF 0%, #5C90FF 100%);
-  -webkit-background-clip: text; color: transparent;
-  text-shadow: 0 4rpx 12rpx rgba(46, 107, 255, 0.2);
-}
+.headline-sub { font-size: 28rpx; color: #888888; margin-bottom: 16rpx; background: rgba(0,0,0,0.04); display: inline-block; padding: 6rpx 20rpx; border-radius: 999rpx; }
+.headline-main { font-size: 64rpx; font-weight: 900; color: #111111; letter-spacing: 2rpx; line-height: 1.3; }
+.hl-gradient { background: linear-gradient(120deg, #1A4BFF 0%, #5C90FF 100%); -webkit-background-clip: text; color: transparent; text-shadow: 0 4rpx 12rpx rgba(46, 107, 255, 0.2); }
 
-/* ======== 2. 场景入口胶囊 ======== */
 .capsule-row { display: flex; gap: 20rpx; margin-bottom: 60rpx; }
 
-/* 行业主入口：蓝底圆角矩形 */
+/* 基础胶囊通用 */
 .capsule-primary {
-  display: flex; align-items: center; gap: 12rpx;
-  padding: 18rpx 32rpx; border-radius: 16rpx; /* 8px 约等于 16rpx */
-  background: #F0F5FF; border: 1rpx solid rgba(46, 107, 255, 0.1);
-  transition: all 0.2s ease; box-shadow: 0 4rpx 12rpx rgba(46,107,255,0.08);
-}
-.capsule-primary .capsule-icon { font-size: 32rpx; }
-.capsule-primary .capsule-text { font-size: 28rpx; color: #1A4BFF; font-weight: 600; }
-
-/* 档案入口：幽灵按钮 */
-.capsule-ghost {
-  display: flex; align-items: center; gap: 12rpx;
-  padding: 18rpx 32rpx; border-radius: 16rpx;
-  background: rgba(255,255,255,0.8); border: 1rpx solid #E5E7EB;
+  display: flex; align-items: center; gap: 12rpx; padding: 18rpx 32rpx; border-radius: 16rpx;
   transition: all 0.2s ease;
+}
+/* 状态 1：未选态 (白底，灰字，灰边) */
+.capsule-empty {
+  background: rgba(255,255,255,0.8); border: 1rpx solid #E5E7EB;
+}
+.capsule-empty .capsule-text { color: #6B7280; font-weight: 500; }
+.capsule-empty .capsule-icon { filter: grayscale(100%); opacity: 0.6; }
+
+/* 状态 2：已选态 (蓝底，白字) - 充满自信！ */
+.capsule-solid {
+  background: linear-gradient(135deg, #2E6BFF 0%, #1A4BFF 100%);
+  border: 1rpx solid transparent; box-shadow: 0 8rpx 24rpx rgba(46,107,255,0.3);
+}
+.capsule-solid .capsule-text { color: #FFFFFF; font-weight: 700; text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.1); }
+/* 右箭头微动画 */
+.capsule-solid .capsule-text::after { content: ''; display: inline-block; transition: transform 0.2s ease; }
+.capsule-solid:hover .capsule-text::after { transform: translateX(4rpx); }
+
+/* 档案幽灵按钮 */
+.capsule-ghost {
+  display: flex; align-items: center; gap: 12rpx; padding: 18rpx 32rpx; border-radius: 16rpx;
+  background: rgba(255,255,255,0.8); border: 1rpx solid #E5E7EB; transition: all 0.2s ease;
 }
 .capsule-ghost .capsule-icon-ghost { font-size: 34rpx; opacity: 0.8; }
 .capsule-ghost .capsule-text-ghost { font-size: 26rpx; color: #666666; font-weight: 500; }
 
-/* 首次引导呼吸动效 */
-@keyframes subtle-pulse {
-  0% { box-shadow: 0 0 0 0 rgba(46, 107, 255, 0.4); }
-  70% { box-shadow: 0 0 0 16rpx rgba(46, 107, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(46, 107, 255, 0); }
-}
+@keyframes subtle-pulse { 0% { box-shadow: 0 0 0 0 rgba(46, 107, 255, 0.4); } 70% { box-shadow: 0 0 0 16rpx rgba(46, 107, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(46, 107, 255, 0); } }
 .pulse-infinite { animation: subtle-pulse 2s infinite; }
-
-/* 防呆抖动 */
-@keyframes shake-horizontal {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-8rpx); }
-  20%, 40%, 60%, 80% { transform: translateX(8rpx); }
-}
+@keyframes shake-horizontal { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-8rpx); } 20%, 40%, 60%, 80% { transform: translateX(8rpx); } }
 .shake { animation: shake-horizontal 0.5s ease-in-out; border-color: #FF4D4F !important; background: #FFF1F0 !important;}
 .shake .capsule-text { color: #FF4D4F !important; }
 
-/* ======== 3. 核心功能卡片通用 ======== */
+/* 功能卡片通用 */
 .feature-card {
-  position: relative; background: #FFFFFF; border-radius: 32rpx;
-  padding: 36rpx; margin-bottom: 32rpx;
-  box-shadow: 0 16rpx 48rpx rgba(0, 0, 0, 0.04);
-  border: 1rpx solid rgba(0, 0, 0, 0.02); transition: all 0.15s ease;
+  position: relative; background: #FFFFFF; border-radius: 32rpx; padding: 36rpx; margin-bottom: 32rpx;
+  box-shadow: 0 16rpx 48rpx rgba(0, 0, 0, 0.04); border: 1rpx solid rgba(0, 0, 0, 0.02); transition: all 0.15s ease;
 }
 .card-body { display: flex; align-items: center; gap: 24rpx; }
 .card-content { flex: 1; }
 .card-main-title { font-size: 34rpx; font-weight: 700; color: #222222; margin-bottom: 10rpx; }
 .card-sub-title { font-size: 26rpx; color: #888888; }
-.icon-3d {
-  width: 100rpx; height: 100rpx; border-radius: 28rpx;
-  display: flex; align-items: center; justify-content: center;
-}
+.icon-3d { width: 100rpx; height: 100rpx; border-radius: 28rpx; display: flex; align-items: center; justify-content: center; }
 .icon-inner { font-size: 48rpx; }
 .icon-shield-light { background: linear-gradient(135deg, #EBF1FF 0%, #F5F8FF 100%); box-shadow: inset 0 4rpx 10rpx #FFFFFF, 0 8rpx 20rpx rgba(46, 107, 255, 0.1); }
 .icon-lock-light { background: linear-gradient(135deg, #F8F9FA 0%, #F1F3F5 100%); box-shadow: inset 0 4rpx 10rpx #FFFFFF; }
 .icon-ai-light { background: linear-gradient(135deg, #F3E8FF 0%, #FAEDFF 100%); box-shadow: inset 0 4rpx 10rpx #FFFFFF, 0 8rpx 20rpx rgba(168, 85, 247, 0.1); }
 
 .shimmer-btn-light {
-  display: flex; align-items: center; justify-content: center; height: 88rpx;
-  background: #2E6BFF; color: #FFFFFF; border-radius: 24rpx; font-size: 30rpx; font-weight: 600;
-  margin-top: 32rpx; box-shadow: 0 12rpx 24rpx rgba(46, 107, 255, 0.25);
+  display: flex; align-items: center; justify-content: center; height: 88rpx; background: #2E6BFF; color: #FFFFFF;
+  border-radius: 24rpx; font-size: 30rpx; font-weight: 600; margin-top: 32rpx; box-shadow: 0 12rpx 24rpx rgba(46, 107, 255, 0.25);
 }
-.card-locked-light { opacity: 0.85; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); }
-.lock-tag-light { position: absolute; top: 28rpx; right: 28rpx; font-size: 22rpx; color: #999999; background: #F0F0F0; padding: 6rpx 16rpx; border-radius: 999rpx; font-weight: 500; }
+
+/* 亚克力毛玻璃卡片（用于未解锁） */
+.card-glassmorphism {
+  background: rgba(255, 255, 255, 0.4); /* 极低透明度 */
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1rpx solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.05);
+}
+.card-glassmorphism .card-main-title { color: #666666; } /* 弱化标题颜色 */
+.lock-tag-pro {
+  position: absolute; top: 32rpx; right: 32rpx; font-size: 22rpx; color: #1A4BFF;
+  background: rgba(46, 107, 255, 0.08); padding: 8rpx 20rpx; border-radius: 999rpx; font-weight: 600; border: 1rpx solid rgba(46, 107, 255, 0.15);
+}
+
 .hot-tag-light { position: absolute; top: 28rpx; right: 28rpx; font-size: 22rpx; color: #FF4D4F; background: #FFF1F0; padding: 6rpx 16rpx; border-radius: 999rpx; font-weight: 600; }
 .tap-scale { transform: scale(0.96); box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.02); }
