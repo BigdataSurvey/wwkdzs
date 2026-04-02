@@ -1,6 +1,5 @@
 import { INDUSTRIES, STAGES } from '../../data/mock'
 import { getSelectionState, setSelectionState } from '../../utils/storage'
-import { pulse } from '../../utils/haptics'
 
 Page({
   data: {
@@ -29,21 +28,19 @@ Page({
     const id = Number(e.currentTarget.dataset.id)
     const industry = INDUSTRIES.find(i => i.id === id)
 
-    pulse()
     this.setData({
       selectedIndustryId: id,
       selectedIndustryName: industry?.name || '',
-      selectedStageKey: '' // 切换行业时重置阶段
+      selectedStageKey: ''
     })
 
-    // 选中后自动进入下一步
+    // 🚨 保证对勾动画（0.2秒）完美播完后，再进行翻页，绝对不产生割裂的抖动感
     setTimeout(() => {
       this.setData({ step: 2 })
     }, 300)
   },
 
   chooseStage(e: any) {
-    pulse()
     this.setData({
       selectedStageKey: e.currentTarget.dataset.key
     })
@@ -58,10 +55,7 @@ Page({
     const stage = STAGES.find((item) => item.key === this.data.selectedStageKey)
 
     if (!industry || !stage) {
-      wx.showToast({
-        title: '请选择行业和阶段',
-        icon: 'none'
-      })
+      wx.showToast({ title: '请选择行业和阶段', icon: 'none' })
       return
     }
 
@@ -74,15 +68,12 @@ Page({
     }
 
     setSelectionState(selection)
-    getApp<IAppOption>().globalData.selection = selection
+    const app = getApp<IAppOption>()
+    if(app && app.globalData) {
+      app.globalData.selection = selection
+    }
 
-    wx.showToast({
-      title: '设置成功',
-      icon: 'success'
-    })
-
-    setTimeout(() => {
-      wx.navigateBack()
-    }, 500)
+    wx.showToast({ title: '设置成功', icon: 'success' })
+    setTimeout(() => { wx.navigateBack() }, 500)
   }
 })

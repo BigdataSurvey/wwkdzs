@@ -22,7 +22,7 @@
           <view class="industry-name">{{item.name}}</view>
           <view class="industry-tag">{{item.tag}}</view>
 
-          <view class="check-marker" wx:if="{{selectedIndustryId === item.id}}">
+          <view class="check-marker {{selectedIndustryId === item.id ? 'show-marker' : ''}}">
             <text>✓</text>
           </view>
         </view>
@@ -46,7 +46,7 @@
           <view class="sc-desc">{{item.desc}}</view>
           <view class="sc-scenario-grey">{{item.scenario}}</view>
 
-          <view class="check-marker" wx:if="{{selectedStageKey === item.key}}">
+          <view class="check-marker {{selectedStageKey === item.key ? 'show-marker' : ''}}">
             <text>✓</text>
           </view>
         </view>
