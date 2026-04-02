@@ -20,31 +20,32 @@
 }
 
 .bar-item {
-position: relative;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 140rpx;
-  height: 84rpx; /* 稍微调扁一点，更精致 */
-  border-radius: 20rpx; /* 改为小圆角矩形色块 */
+  height: 84rpx;
+  border-radius: 20rpx;
   transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* 优化：极其明显的选中底色 */
 .bar-item-active {
   background: #2E6BFF;
   box-shadow: 0 8rpx 20rpx rgba(46, 107, 255, 0.2);
 }
 
 .bar-icon {
-  font-size: 38rpx;
+  font-size: 36rpx;
   line-height: 1;
   margin-bottom: 4rpx;
   transition: transform 0.25s ease;
 }
 
 .bar-item-active .bar-icon {
-  transform: translateY(2rpx); /* 去掉放大，改为微下沉 */+
+  transform: translateY(2rpx);
 }
 
 .bar-label {
@@ -54,9 +55,13 @@ position: relative;
   transition: color 0.25s ease;
 }
 
+/* 选中态：字和图标全变白 */
 .bar-item-active .bar-label {
   color: #FFFFFF;
   font-weight: 600;
 }
 
-.bar-dot { display: none; }
+/* 隐藏原有的小圆点，因为底色已经足够明确 */
+.bar-dot {
+  display: none;
+}
