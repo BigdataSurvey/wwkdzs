@@ -21,29 +21,34 @@
           <view class="industry-icon">{{item.icon}}</view>
           <view class="industry-name">{{item.name}}</view>
           <view class="industry-tag">{{item.tag}}</view>
-          <view class="industry-check" wx:if="{{selectedIndustryId === item.id}}">✓</view>
+
+          <view class="check-marker" wx:if="{{selectedIndustryId === item.id}}">
+            <text>✓</text>
+          </view>
         </view>
       </view>
     </view>
 
     <view class="step-panel">
       <view class="breadcrumb-pro" bindtap="goBack" hover-class="tap-scale">
-        <text class="bc-arrow">‹</text>
-        <text class="bc-text">返回修改行业 (当前: {{selectedIndustryName}})</text>
+        <view class="bc-icon-wrap"><text class="bc-arrow">←</text></view>
+        <text class="bc-text">重选行业<text class="bc-highlight">· 已选{{selectedIndustryName}}</text></text>
       </view>
 
       <view class="stage-list">
         <view class="stage-card-pro {{selectedStageKey === item.key ? 'stage-active-pro' : ''}}" wx:for="{{stages}}" wx:key="key" data-key="{{item.key}}" bindtap="chooseStage" hover-class="tap-scale-card">
           <view class="sc-header">
             <view class="sc-title">
-              <view class="sc-checkbox" wx:if="{{selectedStageKey === item.key}}">✓</view>
-              <view class="sc-checkbox-empty" wx:else></view>
               <text class="sc-icon">{{item.icon}}</text>{{item.name}}
             </view>
           </view>
           <view class="sc-divider"></view>
           <view class="sc-desc">{{item.desc}}</view>
           <view class="sc-scenario-grey">{{item.scenario}}</view>
+
+          <view class="check-marker" wx:if="{{selectedStageKey === item.key}}">
+            <text>✓</text>
+          </view>
         </view>
       </view>
 

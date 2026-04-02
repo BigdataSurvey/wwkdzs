@@ -10,7 +10,7 @@
   </view>
 
   <view class="capsule-row">
-    <view class="capsule-primary {{!selection.industryId ? 'capsule-empty pulse-infinite' : 'capsule-solid'}} {{shakeIndustry ? 'shake pulse-once' : ''}}" bindtap="goSelectIndustry" hover-class="tap-scale">
+    <view class="capsule-primary {{!selection.industryId ? 'capsule-empty pulse-infinite' : 'capsule-solid'}} {{shakeIndustry ? 'shake' : ''}}" bindtap="goSelectIndustry" hover-class="tap-scale">
       <text class="capsule-icon">🎯</text>
       <text class="capsule-text">{{selectionDisplayText}}</text>
     </view>
