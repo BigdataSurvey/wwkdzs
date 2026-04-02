@@ -17,7 +17,7 @@
     <view class="step-panel">
       <view class="step-subtitle-strong">不同行业的风险点、成本结构差异很大</view>
       <view class="industry-grid">
-        <view class="industry-card {{selectedIndustryId === item.id ? 'industry-active' : ''}}" wx:for="{{industries}}" wx:key="id" data-id="{{item.id}}" bindtap="chooseIndustry" hover-class="tap-scale">
+        <view class="industry-card {{selectedIndustryId === item.id ? 'industry-active' : ''}}" wx:for="{{industries}}" wx:key="id" data-id="{{item.id}}" bindtap="chooseIndustry">
           <view class="industry-icon">{{item.icon}}</view>
           <view class="industry-name">{{item.name}}</view>
           <view class="industry-tag">{{item.tag}}</view>
@@ -36,7 +36,7 @@
       </view>
 
       <view class="stage-list">
-        <view class="stage-card-pro {{selectedStageKey === item.key ? 'stage-active-pro' : ''}}" wx:for="{{stages}}" wx:key="key" data-key="{{item.key}}" bindtap="chooseStage" hover-class="tap-scale-card">
+        <view class="stage-card-pro {{selectedStageKey === item.key ? 'stage-active-pro' : ''}}" wx:for="{{stages}}" wx:key="key" data-key="{{item.key}}" bindtap="chooseStage">
           <view class="sc-header">
             <view class="sc-title">
               <text class="sc-icon">{{item.icon}}</text>{{item.name}}
@@ -53,7 +53,10 @@
       </view>
 
       <view class="step-action" wx:if="{{selectedStageKey}}">
-        <view class="safe-tips">预估 3-5 分钟 · 15 道核心排雷题</view>
+        <view class="safe-tips-pro">
+          <text class="safe-tips-emoji">⏱️</text>
+          <text>预估 3-5 分钟 · 15 道核心题</text>
+        </view>
         <view class="primary-btn" bindtap="saveSelection" hover-class="btn-hover">确认并开始诊断</view>
       </view>
     </view>

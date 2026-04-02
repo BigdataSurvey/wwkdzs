@@ -4,18 +4,18 @@ Component({
     tabs: [
       {
         pagePath: "/pages/index/index",
-        text: "首页",
-        icon: "🏠"
+        iconPath: "/images/tabbar/home_normal.svg",
+        selectedIconPath: "/images/tabbar/home_active.svg"
       },
       {
         pagePath: "/pages/tools/index",
-        text: "工具箱",
-        icon: "🧰"
+        iconPath: "/images/tabbar/tools_normal.svg",
+        selectedIconPath: "/images/tabbar/tools_active.svg"
       },
       {
         pagePath: "/pages/archive/index",
-        text: "档案",
-        icon: "📊"
+        iconPath: "/images/tabbar/archive_normal.svg",
+        selectedIconPath: "/images/tabbar/archive_active.svg"
       }
     ]
   },

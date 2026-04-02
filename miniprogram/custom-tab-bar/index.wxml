@@ -1,14 +1,21 @@
-<view class="float-bar">
+<view class="float-bar-ios">
   <view
-    class="bar-item {{selected === index ? 'bar-item-active' : ''}}"
+    class="bar-item-ios {{selected === index ? 'item-active-ios' : ''}}"
     wx:for="{{tabs}}"
-    wx:key="text"
+    wx:key="pagePath"
     data-index="{{index}}"
     data-path="{{item.pagePath}}"
     bindtap="switchTab"
+    hover-class="item-hover"
   >
-    <view class="bar-icon">{{item.icon}}</view>
-    <view class="bar-label">{{item.text}}</view>
-    <view class="bar-dot" wx:if="{{selected === index}}"></view>
+    <view class="icon-core">
+      <image
+        class="icon-img"
+        src="{{selected === index ? item.selectedIconPath : item.iconPath}}"
+        mode="aspectFit"
+      ></image>
+    </view>
+
+    <view class="dot-indicator"></view>
   </view>
 </view>
