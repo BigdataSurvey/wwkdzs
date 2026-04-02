@@ -1,7 +1,22 @@
+/* ======== 全局背景层 ======== */
+.custom-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  opacity: 1;
+}
+
 /* 两步交互页面 */
 .step-page {
+  position: relative;
+  z-index: 1;
   overflow: hidden;
   padding: 0;
+  min-height: 100vh;
+  color: #333333; /* 基础文字颜色 */
 }
 
 /* 步骤指示器 */
@@ -16,8 +31,8 @@
   width: 56rpx;
   height: 56rpx;
   border-radius: 50%;
-  background: rgba(255,255,255,0.1);
-  color: #A0AAB5;
+  background: #E5E7EB; /* 浅色背景 */
+  color: #6B7280;
   font-size: 26rpx;
   font-weight: 700;
   display: flex;
@@ -27,21 +42,21 @@
 }
 
 .step-dot-active {
-  background: linear-gradient(135deg, #3B82F6 0%, #2E6BFF 100%);
+  background: #2E6BFF;
   color: #FFFFFF;
-  box-shadow: 0 8rpx 24rpx rgba(46, 107, 255, 0.4);
+  box-shadow: 0 8rpx 24rpx rgba(46, 107, 255, 0.25);
 }
 
 .step-line {
   width: 120rpx;
   height: 4rpx;
-  background: rgba(255,255,255,0.1);
+  background: #E5E7EB;
   margin: 0 20rpx;
   transition: all 0.3s ease;
 }
 
 .step-line-active {
-  background: linear-gradient(90deg, #3B82F6 0%, #2E6BFF 100%);
+  background: #2E6BFF;
 }
 
 /* 步骤容器 - 横向滑动 */
@@ -63,7 +78,7 @@
 }
 
 .step-back {
-  color: #A0AAB5;
+  color: #666666; /* 浅色模式下的返回按钮 */
   font-size: 26rpx;
   margin-bottom: 16rpx;
 }
@@ -71,13 +86,13 @@
 .step-title {
   font-size: 44rpx;
   font-weight: 700;
-  color: #FFFFFF;
+  color: #111111; /* 纯黑标题 */
   margin-bottom: 12rpx;
 }
 
 .step-subtitle {
   font-size: 28rpx;
-  color: #A0AAB5;
+  color: #666666; /* 深灰副标题 */
   line-height: 1.6;
 }
 
@@ -94,42 +109,41 @@
   min-height: 200rpx;
   padding: 28rpx;
   border-radius: 28rpx;
-  border: 2rpx solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.04);
+  border: 1rpx solid rgba(0,0,0,0.04);
+  background: #FFFFFF; /* 纯白卡片 */
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.03); /* 轻柔阴影 */
   box-sizing: border-box;
   transition: all 0.25s ease;
 }
 
 .industry-active {
-  border-color: rgba(92, 144, 255, 0.6);
-  background: linear-gradient(135deg, rgba(46, 107, 255, 0.18) 0%, rgba(46, 107, 255, 0.08) 100%);
-  box-shadow: 0 20rpx 50rpx rgba(46, 107, 255, 0.2);
+  border-color: rgba(46, 107, 255, 0.4);
+  background: rgba(46, 107, 255, 0.04);
+  box-shadow: 0 12rpx 32rpx rgba(46, 107, 255, 0.1);
 }
 
 .industry-icon {
   width: 72rpx;
   height: 72rpx;
   border-radius: 24rpx;
-  background: rgba(46, 107, 255, 0.16);
+  background: rgba(46, 107, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30rpx;
-  color: #DDE9FF;
-  font-weight: 700;
+  font-size: 32rpx;
   margin-bottom: 20rpx;
 }
 
 .industry-name {
   font-size: 32rpx;
   font-weight: 700;
-  color: #FFFFFF;
+  color: #222222; /* 黑色行业名 */
   margin-bottom: 8rpx;
 }
 
 .industry-tag {
   font-size: 24rpx;
-  color: #A0AAB5;
+  color: #888888;
   line-height: 1.5;
 }
 
@@ -137,12 +151,12 @@
   position: absolute;
   top: 20rpx;
   right: 20rpx;
-  width: 44rpx;
-  height: 44rpx;
+  width: 40rpx;
+  height: 40rpx;
   border-radius: 50%;
   background: #2E6BFF;
   color: #FFFFFF;
-  font-size: 26rpx;
+  font-size: 24rpx;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -161,14 +175,15 @@
   justify-content: space-between;
   align-items: center;
   border-radius: 24rpx;
-  background: rgba(255,255,255,0.04);
-  border: 2rpx solid rgba(255,255,255,0.08);
+  background: #FFFFFF;
+  border: 1rpx solid rgba(0,0,0,0.04);
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.03);
   transition: all 0.25s ease;
 }
 
 .stage-active {
-  background: linear-gradient(135deg, rgba(46, 107, 255, 0.18) 0%, rgba(46, 107, 255, 0.08) 100%);
-  border-color: rgba(92, 144, 255, 0.6);
+  background: rgba(46, 107, 255, 0.04);
+  border-color: rgba(46, 107, 255, 0.4);
 }
 
 .stage-content {
@@ -178,14 +193,14 @@
 .stage-name {
   font-size: 32rpx;
   font-weight: 700;
-  color: #FFFFFF;
+  color: #222222;
   margin-bottom: 8rpx;
 }
 
 .stage-desc {
   font-size: 26rpx;
   line-height: 1.6;
-  color: #A0AAB5;
+  color: #666666;
 }
 
 .stage-check {
@@ -199,4 +214,26 @@
 .step-action {
   margin-top: 40rpx;
   padding: 0 10rpx;
+}
+
+/* 确认按钮样式 */
+.primary-btn {
+  background: #2E6BFF;
+  color: #FFFFFF;
+  text-align: center;
+  padding: 24rpx 0;
+  border-radius: 24rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  box-shadow: 0 12rpx 24rpx rgba(46, 107, 255, 0.25);
+  transition: all 0.2s ease;
+}
+
+.primary-btn:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.tap-scale {
+  transform: scale(0.975);
 }

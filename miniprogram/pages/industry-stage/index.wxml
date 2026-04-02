@@ -1,28 +1,27 @@
+<image class="custom-bg" src="../../images/bg.png" mode="aspectFill"></image>
+
 <view class="page step-page">
-  <!-- 步骤指示器 -->
   <view class="step-indicator">
     <view class="step-dot {{step >= 1 ? 'step-dot-active' : ''}}">1</view>
     <view class="step-line {{step >= 2 ? 'step-line-active' : ''}}"></view>
     <view class="step-dot {{step >= 2 ? 'step-dot-active' : ''}}">2</view>
   </view>
 
-  <!-- 步骤容器 -->
-  <view class="step-container" style="transform: translateX({{step === 1 ? '0' : '-100%'}});">
-    
-    <!-- Step 1: 选择行业 -->
+  <view class="step-container" style="transform: translateX({{step === 1 ? '0' : '-50%'}});">
+
     <view class="step-panel">
       <view class="step-header">
         <view class="step-title">你打算做什么行业？</view>
         <view class="step-subtitle">不同行业的风险点、成本结构、回本周期差异很大</view>
       </view>
-      
+
       <view class="industry-grid">
-        <view 
-          class="industry-card {{selectedIndustryId === item.id ? 'industry-active' : ''}}" 
-          wx:for="{{industries}}" 
-          wx:key="id" 
-          data-id="{{item.id}}" 
-          bindtap="chooseIndustry" 
+        <view
+          class="industry-card {{selectedIndustryId === item.id ? 'industry-active' : ''}}"
+          wx:for="{{industries}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="chooseIndustry"
           hover-class="tap-scale"
         >
           <view class="industry-icon">{{item.icon}}</view>
@@ -32,22 +31,21 @@
         </view>
       </view>
     </view>
-    
-    <!-- Step 2: 选择阶段 -->
+
     <view class="step-panel">
       <view class="step-header">
         <view class="step-back" bindtap="goBack">← 返回修改行业</view>
         <view class="step-title">你目前处于哪个阶段？</view>
         <view class="step-subtitle">{{selectedIndustryName}} · 不同阶段的诊断侧重点完全不同</view>
       </view>
-      
+
       <view class="stage-list">
-        <view 
-          class="stage-card {{selectedStageKey === item.key ? 'stage-active' : ''}}" 
-          wx:for="{{stages}}" 
-          wx:key="key" 
-          data-key="{{item.key}}" 
-          bindtap="chooseStage" 
+        <view
+          class="stage-card {{selectedStageKey === item.key ? 'stage-active' : ''}}"
+          wx:for="{{stages}}"
+          wx:key="key"
+          data-key="{{item.key}}"
+          bindtap="chooseStage"
           hover-class="tap-scale"
         >
           <view class="stage-content">
@@ -57,11 +55,11 @@
           <view class="stage-check">{{selectedStageKey === item.key ? '✓' : ''}}</view>
         </view>
       </view>
-      
+
       <view class="step-action" wx:if="{{selectedStageKey}}">
         <view class="primary-btn" bindtap="saveSelection">确认并开始诊断</view>
       </view>
     </view>
-    
+
   </view>
 </view>
