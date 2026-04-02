@@ -1,160 +1,98 @@
-import { BASE_QUESTIONS, INDUSTRIES, STAGES } from '../../../data/mock'
-import { pulse, optionTick, progressivePulse, heavyPulse } from '../../../utils/haptics'
-import { addDiagnosisRecord, getArchiveTasks, setArchiveTasks } from '../../../utils/storage'
-
-function defaultTasks(industryName: string) {
-  return [
-    { text: `把 ${industryName} 项目的 3 个月现金流安全线单独再测一遍`, done: false },
-    { text: '明确首轮试错预算与退出条件', done: false },
-    { text: '先补一版获客路径与转化链路', done: false }
-  ]
-}
-
-function calcProgress(currentIndex: number, total: number) {
-  return Math.round(((currentIndex + 1) / total) * 100)
-}
-
-// 人格化进度文案
-function getProgressText(currentIndex: number, total: number): string {
-  const percent = (currentIndex + 1) / total
-  if (percent <= 0.33) {
-    return '正在建立门店基础模型...'
-  } else if (percent <= 0.66) {
-    return '深度核算成本结构...'
-  } else if (percent < 1) {
-    return '即将完成抗风险压力测试...'
-  } else {
-    return '诊断完成，生成报告中...'
-  }
-}
-
 Page({
   data: {
-    industryId: 1,
-    stageKey: 'prepare',
-    industryName: '餐饮',
-    stageName: '筹备期',
-    questions: BASE_QUESTIONS,
+    questions: [] as any[],
     currentIndex: 0,
-    progressPercent: calcProgress(0, BASE_QUESTIONS.length),
-    progressText: getProgressText(0, BASE_QUESTIONS.length),
-    answers: Array(BASE_QUESTIONS.length).fill(-1),
-    selectedIndex: -1,
-    isGenerating: false // 报告生成中状态
+    answers: [] as any[],
+    progress: 0,
+    isLoading: true,
+    animationData: {} // 用于切换卡片的动画
   },
 
-  onLoad(query: Record<string, string>) {
-    const industryId = Number(query.industryId || 1)
-    const stageKey = query.stageKey || 'prepare'
-    const industry = INDUSTRIES.find((item) => item.id === industryId)
-    const stage = STAGES.find((item) => item.key === stageKey)
-
-    this.setData({
-      industryId,
-      stageKey,
-      industryName: industry?.name || '餐饮',
-      stageName: stage?.name || '筹备期',
-      progressPercent: calcProgress(0, BASE_QUESTIONS.length),
-      progressText: getProgressText(0, BASE_QUESTIONS.length)
-    })
+  onLoad() {
+    this.fetchQuestions();
   },
 
-  chooseOption(e: any) {
-    const selectedIndex = Number(e.currentTarget.dataset.index)
-    const { currentIndex, answers } = this.data as any
-    answers[currentIndex] = selectedIndex
-    
-    // 选项点击轻微短震
-    optionTick()
-    
-    this.setData({
-      selectedIndex,
-      answers
-    })
+  // 🚨 核心：从云端获取 15 道（目前是3道）核心排雷题
+  async fetchQuestions() {
+    wx.showLoading({ title: '准备排雷题库...', mask: true });
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'getQuestionnaire',
+        data: { type: 'base' }
+      });
+
+      const result = res.result as any;
+      if (result.code === 0) {
+        this.setData({
+          questions: result.data,
+          isLoading: false
+        });
+        this.updateProgress();
+      } else {
+        wx.showToast({ title: '题库加载失败', icon: 'none' });
+      }
+    } catch (err) {
+      console.error('云端拉取题目失败:', err);
+    } finally {
+      wx.hideLoading();
+    }
   },
 
-  prevQuestion() {
-    if (this.data.currentIndex === 0) return
-    pulse()
-    const nextIndex = this.data.currentIndex - 1
-    const answers = this.data.answers as number[]
-    this.setData({
-      currentIndex: nextIndex,
-      selectedIndex: answers[nextIndex],
-      progressPercent: calcProgress(nextIndex, this.data.questions.length),
-      progressText: getProgressText(nextIndex, this.data.questions.length)
-    })
+  // 选择选项逻辑
+  selectOption(e: any) {
+    const { optionid, score } = e.currentTarget.dataset;
+    const { questions, currentIndex, answers } = this.data;
+
+    // 记录答案
+    const newAnswers = [...answers];
+    newAnswers[currentIndex] = {
+      questionId: questions[currentIndex].id,
+      optionId: optionid,
+      score: score
+    };
+
+    this.setData({ answers: newAnswers });
+
+    // 延迟 300ms 自动切题，给用户留出看中选反馈的时间
+    setTimeout(() => {
+      this.nextQuestion();
+    }, 300);
   },
 
   nextQuestion() {
-    const { currentIndex, selectedIndex, questions, answers } = this.data as any
-    if (selectedIndex === -1) {
-      wx.showToast({ title: '请选择一个答案', icon: 'none' })
-      return
-    }
+    const { currentIndex, questions, answers } = this.data;
 
-    if (currentIndex === questions.length - 1) {
-      this.submitAssessment()
-      return
+    if (currentIndex < questions.length - 1) {
+      this.setData({
+        currentIndex: currentIndex + 1
+      }, () => {
+        this.updateProgress();
+      });
+    } else {
+      // 🚨 答题结束：计算得分并跳转结果页
+      this.finishAssessment(answers);
     }
-
-    pulse()
-    const nextIndex = currentIndex + 1
-    this.setData({
-      currentIndex: nextIndex,
-      selectedIndex: answers[nextIndex],
-      progressPercent: calcProgress(nextIndex, this.data.questions.length),
-      progressText: getProgressText(nextIndex, this.data.questions.length)
-    })
   },
 
-  submitAssessment() {
-    const answers = this.data.answers as number[]
-    if (answers.some((item) => item === -1)) {
-      wx.showToast({ title: '还有题目未完成', icon: 'none' })
-      return
-    }
+  updateProgress() {
+    const total = this.data.questions.length;
+    if (total === 0) return;
+    const progress = Math.floor(((this.data.currentIndex) / total) * 100);
+    this.setData({ progress });
+  },
 
-    // 进入生成报告状态
-    this.setData({ 
-      isGenerating: true,
-      progressText: '正在生成专属诊断报告...'
-    })
+  finishAssessment(answers: any[]) {
+    // 这里先简单计算总分，后续可以存入云端
+    const totalScore = answers.reduce((sum, item) => sum + item.score, 0);
 
-    // 渐进式震动 + 2-3秒过渡
-    progressivePulse(() => {
-      // 震动结束后，重震一次表示完成
-      setTimeout(() => {
-        heavyPulse()
-        
-        // 计算得分
-        const total = BASE_QUESTIONS.reduce((sum, question, index) => {
-          const answerIndex = answers[index]
-          return sum + question.options[answerIndex].score
-        }, 0)
+    wx.showLoading({ title: '正在生成排雷报告...' });
 
-        const score = Math.round(total / BASE_QUESTIONS.length)
-        const createdAt = new Date()
-        const time = `${createdAt.getMonth() + 1}月${createdAt.getDate()}日 ${String(createdAt.getHours()).padStart(2, '0')}:${String(createdAt.getMinutes()).padStart(2, '0')}`
-
-        addDiagnosisRecord({
-          type: '基础诊断',
-          industry: this.data.industryName,
-          stage: this.data.stageName,
-          score,
-          time,
-          summary: score >= 80 ? '整体可推进，但建议先小范围试运营。' : (score >= 60 ? '可以继续做，但先补齐关键短板。' : '建议暂缓重投入，先补测算与验证。')
-        })
-
-        const oldTasks = getArchiveTasks()
-        if (!oldTasks.length) {
-          setArchiveTasks(defaultTasks(this.data.industryName))
-        }
-
-        wx.navigateTo({
-          url: `/pages/result/index?type=base&score=${score}&industryId=${this.data.industryId}&stageKey=${this.data.stageKey}`
-        })
-      }, 300)
-    })
+    // 模拟云端计算过程
+    setTimeout(() => {
+      wx.hideLoading();
+      wx.redirectTo({
+        url: `/pages/result/index?score=${totalScore}&type=base`
+      });
+    }, 1500);
   }
-})
+});
