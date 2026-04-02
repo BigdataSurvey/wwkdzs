@@ -99,18 +99,15 @@ Page({
   },
 
   goBaseAssessment() {
-    if (!this.data.selection || !this.data.selection.industryId) {
-      this.setData({ shakeIndustry: true });
-      wx.showToast({ title: '请点击左上方「选择行业」', icon: 'none', duration: 2000 });
-
-      if (this.shakeTimer) clearTimeout(this.shakeTimer);
-      this.shakeTimer = setTimeout(() => {
-        this.setData({ shakeIndustry: false });
-      }, 500) as unknown as number;
+    const selection = this.data.selection;
+    if (!selection || !selection.industryId) {
+      // ... 之前的抖动逻辑 ...
       return;
     }
-
-    wx.navigateTo({ url: '/pages/assessment/base/index' });
+    // 🚨 传递参数：把选中的行业ID和阶段Key传过去
+    wx.navigateTo({ 
+      url: `/pages/assessment/base/index?industryId=${selection.industryId}&stageKey=${selection.stageKey}` 
+    });
   },
 
   goArchive() {

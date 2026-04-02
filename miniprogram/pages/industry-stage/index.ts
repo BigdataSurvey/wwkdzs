@@ -1,20 +1,45 @@
-import { INDUSTRIES, STAGES } from '../../data/mock'
 import { getSelectionState, setSelectionState } from '../../utils/storage'
 
 Page({
   data: {
     step: 1,
-    industries: INDUSTRIES,
-    stages: STAGES,
+    industries: [] as any[], // 🚨 初始为空，由云端填入
+    stages: [] as any[],
     selectedIndustryId: 0,
     selectedIndustryName: '',
-    selectedStageKey: ''
+    selectedStageKey: '',
+    isLoading: true
   },
 
   onLoad() {
+    this.fetchCloudConfig()
+  },
+
+  // 🚨 核心修复：调用云函数获取最新配置
+  async fetchCloudConfig() {
+    wx.showLoading({ title: '拉取配置中...', mask: true })
+    try {
+      const res = await wx.cloud.callFunction({ name: 'getSelectionConfig' })
+      const result = res.result as any
+      if (result.code === 0) {
+        this.setData({
+          industries: result.data.industries,
+          stages: result.data.stages,
+          isLoading: false
+        })
+        this.restoreSelection(result.data.industries, result.data.stages)
+      }
+    } catch (err) {
+      console.error('云配置加载失败:', err)
+    } finally {
+      wx.hideLoading()
+    }
+  },
+
+  restoreSelection(industries: any[], stages: any[]) {
     const selection = getSelectionState()
     if (selection.industryId) {
-      const industry = INDUSTRIES.find(i => i.id === selection.industryId)
+      const industry = industries.find(i => i.id === selection.industryId)
       this.setData({
         selectedIndustryId: selection.industryId,
         selectedIndustryName: industry?.name || '',
@@ -26,54 +51,32 @@ Page({
 
   chooseIndustry(e: any) {
     const id = Number(e.currentTarget.dataset.id)
-    const industry = INDUSTRIES.find(i => i.id === id)
-
+    const industry = this.data.industries.find(i => i.id === id)
     this.setData({
       selectedIndustryId: id,
       selectedIndustryName: industry?.name || '',
       selectedStageKey: ''
     })
-
-    // 🚨 保证对勾动画（0.2秒）完美播完后，再进行翻页，绝对不产生割裂的抖动感
-    setTimeout(() => {
-      this.setData({ step: 2 })
-    }, 300)
+    setTimeout(() => { this.setData({ step: 2 }) }, 300)
   },
 
   chooseStage(e: any) {
-    this.setData({
-      selectedStageKey: e.currentTarget.dataset.key
-    })
+    this.setData({ selectedStageKey: e.currentTarget.dataset.key })
   },
 
-  goBack() {
-    this.setData({ step: 1 })
-  },
+  goBack() { this.setData({ step: 1 }) },
 
   saveSelection() {
-    const industry = INDUSTRIES.find((item) => item.id === this.data.selectedIndustryId)
-    const stage = STAGES.find((item) => item.key === this.data.selectedStageKey)
-
-    if (!industry || !stage) {
-      wx.showToast({ title: '请选择行业和阶段', icon: 'none' })
-      return
-    }
-
+    const industry = this.data.industries.find(i => i.id === this.data.selectedIndustryId)
+    const stage = this.data.stages.find(s => s.key === this.data.selectedStageKey)
+    if (!industry || !stage) return
     const selection = {
-      industryId: industry.id,
-      industryName: industry.name,
-      industryTag: industry.tag,
-      stageKey: stage.key,
-      stageName: stage.name
+      industryId: industry.id, industryName: industry.name, industryTag: industry.tag,
+      stageKey: stage.key, stageName: stage.name
     }
-
     setSelectionState(selection)
-    const app = getApp<IAppOption>()
-    if(app && app.globalData) {
-      app.globalData.selection = selection
-    }
-
-    wx.showToast({ title: '设置成功', icon: 'success' })
+    getApp().globalData.selection = selection
+    wx.showToast({ title: '配置成功', icon: 'success' })
     setTimeout(() => { wx.navigateBack() }, 500)
   }
 })
