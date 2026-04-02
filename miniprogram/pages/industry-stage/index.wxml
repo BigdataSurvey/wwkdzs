@@ -15,7 +15,7 @@
   <view class="step-container" style="transform: translateX({{step === 1 ? '0' : '-50%'}});">
 
     <view class="step-panel">
-      <view class="step-subtitle-top">不同行业的风险点、成本结构差异很大</view>
+      <view class="step-subtitle-strong">不同行业的风险点、成本结构差异很大</view>
       <view class="industry-grid">
         <view class="industry-card {{selectedIndustryId === item.id ? 'industry-active' : ''}}" wx:for="{{industries}}" wx:key="id" data-id="{{item.id}}" bindtap="chooseIndustry" hover-class="tap-scale">
           <view class="industry-icon">{{item.icon}}</view>
@@ -27,24 +27,23 @@
     </view>
 
     <view class="step-panel">
-      <view class="breadcrumb" bindtap="goBack" hover-class="tap-scale">
-        <text class="bc-prev">‹ {{selectedIndustryName}}</text>
-        <text class="bc-divider">/</text>
-        <text class="bc-curr">当前阶段</text>
+      <view class="breadcrumb-pro" bindtap="goBack" hover-class="tap-scale">
+        <text class="bc-arrow">‹</text>
+        <text class="bc-text">返回修改行业 (当前: {{selectedIndustryName}})</text>
       </view>
 
       <view class="stage-list">
         <view class="stage-card-pro {{selectedStageKey === item.key ? 'stage-active-pro' : ''}}" wx:for="{{stages}}" wx:key="key" data-key="{{item.key}}" bindtap="chooseStage" hover-class="tap-scale-card">
           <view class="sc-header">
-            <view class="sc-title"><text class="sc-icon">{{item.icon}}</text>{{item.name}}</view>
-            <view class="sc-radio">
-              <view class="radio-inner" wx:if="{{selectedStageKey === item.key}}"></view>
+            <view class="sc-title">
+              <view class="sc-checkbox" wx:if="{{selectedStageKey === item.key}}">✓</view>
+              <view class="sc-checkbox-empty" wx:else></view>
+              <text class="sc-icon">{{item.icon}}</text>{{item.name}}
             </view>
           </view>
           <view class="sc-divider"></view>
           <view class="sc-desc">{{item.desc}}</view>
-          <view class="sc-scenario">{{item.scenario}}</view>
-          <view class="active-indicator" wx:if="{{selectedStageKey === item.key}}"></view>
+          <view class="sc-scenario-grey">{{item.scenario}}</view>
         </view>
       </view>
 

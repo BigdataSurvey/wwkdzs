@@ -20,19 +20,20 @@
 }
 
 .bar-item {
-  position: relative;
+position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 140rpx;
-  height: 96rpx;
-  border-radius: 28rpx;
+  height: 84rpx; /* 稍微调扁一点，更精致 */
+  border-radius: 20rpx; /* 改为小圆角矩形色块 */
   transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .bar-item-active {
-  background: rgba(46, 107, 255, 0.08);
+  background: #2E6BFF;
+  box-shadow: 0 8rpx 20rpx rgba(46, 107, 255, 0.2);
 }
 
 .bar-icon {
@@ -43,7 +44,7 @@
 }
 
 .bar-item-active .bar-icon {
-  transform: scale(1.12);
+  transform: translateY(2rpx); /* 去掉放大，改为微下沉 */+
 }
 
 .bar-label {
@@ -54,16 +55,8 @@
 }
 
 .bar-item-active .bar-label {
-  color: #2E6BFF;
+  color: #FFFFFF;
   font-weight: 600;
 }
 
-.bar-dot {
-  position: absolute;
-  bottom: 6rpx;
-  width: 8rpx;
-  height: 8rpx;
-  border-radius: 50%;
-  background: #2E6BFF;
-  box-shadow: 0 0 12rpx rgba(46, 107, 255, 0.4);
-}
+.bar-dot { display: none; }
