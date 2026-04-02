@@ -1,10 +1,9 @@
 /* ======== 全局基础样式 ======== */
 page {
-  background: #0A0A0F;
-  background-image:
-    radial-gradient(circle at 85% 10%, rgba(46, 107, 255, 0.12), transparent 40%),
-    radial-gradient(circle at 15% 85%, rgba(120, 80, 220, 0.06), transparent 35%);
-  color: #F0F2F5;
+  /* 设置一个兜底的浅灰白色，防止图片加载慢时黑屏 */
+  background: #F6F7F9; 
+  /* 全局文字改成深灰色，高级且不刺眼 */
+  color: #333333; 
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
 }
 

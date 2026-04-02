@@ -16,18 +16,18 @@
     "pages/feedback/index"
   ],
   "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#0A0A0F",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#F6F7F9",
     "navigationBarTitleText": "稳稳开店助手",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#0A0A0F"
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F6F7F9"
   },
   "tabBar": {
     "custom": true,
-    "color": "#6B7280",
+    "color": "#9CA3AF",
     "selectedColor": "#2E6BFF",
-    "backgroundColor": "#0A0A0F",
-    "borderStyle": "black",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",
