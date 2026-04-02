@@ -1,40 +1,19 @@
-.custom-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; }
-.assessment-page { position: relative; z-index: 1; min-height: 100vh; padding: 40rpx 40rpx env(safe-area-inset-bottom, 40rpx); box-sizing: border-box; }
-
-/* 顶部进度条 */
-.nav-header { margin-bottom: 80rpx; }
-.progress-container { height: 12rpx; background: rgba(255, 255, 255, 0.4); border-radius: 999rpx; overflow: hidden; margin-bottom: 20rpx; }
-.progress-bar { height: 100%; background: linear-gradient(90deg, #2E6BFF 0%, #8B5CF6 100%); border-radius: 999rpx; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-.step-counter { font-size: 24rpx; color: #666; font-weight: 600; text-align: center; }
-
-/* 题目内容区 */
-.category-tag { display: inline-block; padding: 6rpx 20rpx; background: rgba(46, 107, 255, 0.1); color: #2E6BFF; font-size: 22rpx; font-weight: 700; border-radius: 8rpx; margin-bottom: 24rpx; }
-.question-title { font-size: 44rpx; font-weight: 800; color: #111; line-height: 1.4; margin-bottom: 60rpx; min-height: 120rpx; }
-
-/* 选项卡片 */
-.options-list { display: flex; flex-direction: column; gap: 30rpx; }
-.option-card {
-  position: relative; display: flex; align-items: center; padding: 40rpx 32rpx;
-  background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);
-  border: 1rpx solid rgba(255, 255, 255, 0.9); border-radius: 24rpx;
-  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease;
+/* 红色报警态：空胶囊样式 */
+.capsule-empty { 
+  background: rgba(255, 77, 79, 0.05) !important; 
+  border: 2rpx solid rgba(255, 77, 79, 0.3) !important; 
 }
-.option-hover { transform: scale(0.98); background: rgba(255, 255, 255, 0.95); }
+.capsule-empty .capsule-text { color: #FF4D4F !important; }
 
-/* 选中态样式 */
-.option-active {
-  border-color: #2E6BFF; background: #F0F5FF;
-  box-shadow: 0 12rpx 32rpx rgba(46, 107, 255, 0.15);
+/* 🚨 经典抖动动画 */
+@keyframes shake-horizontal {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-8rpx); }
+  20%, 40%, 60%, 80% { transform: translateX(8rpx); }
 }
 
-.option-prefix { width: 44rpx; height: 44rpx; background: #F3F4F6; color: #999; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22rpx; font-weight: 700; margin-right: 24rpx; transition: all 0.2s; }
-.option-active .option-prefix { background: #2E6BFF; color: #FFF; }
-
-.option-text { flex: 1; font-size: 32rpx; color: #333; font-weight: 500; transition: color 0.2s; }
-.option-active .option-text { color: #2E6BFF; font-weight: 700; }
-
-.option-check { width: 36rpx; height: 36rpx; background: #2E6BFF; color: #FFF; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22rpx; font-weight: bold; }
-
-/* 底部提示 */
-.assessment-footer { position: fixed; bottom: env(safe-area-inset-bottom, 40rpx); left: 0; width: 100%; text-align: center; font-size: 22rpx; color: #999; }
+.shake { 
+  animation: shake-horizontal 0.4s ease-in-out; 
+  background: #FFF1F0 !important;
+  border-color: #FF4D4F !important;
+}
