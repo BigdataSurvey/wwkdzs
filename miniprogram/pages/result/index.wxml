@@ -1,0 +1,50 @@
+<view class="page">
+  <view class="section hero-card result-hero {{result.tone === 'orange' ? 'tone-orange' : (result.tone === 'green' ? 'tone-green' : '')}}">
+    <view class="hero-title">{{result.level}}</view>
+    <view class="hero-subtitle">{{industryName}} · {{stageName}} · 基础诊断评分 {{score}}</view>
+    <view class="hero-meta">
+      <view class="hero-pill">{{result.title}}</view>
+      <view class="hero-pill">保守专业型口径</view>
+    </view>
+  </view>
+
+  <view class="section card panel">
+    <view class="section-title">结论摘要</view>
+    <view class="summary-text">{{result.desc}}</view>
+  </view>
+
+  <view class="section card panel">
+    <view class="section-title">三个关键维度</view>
+    <view class="dimension-item" wx:for="{{result.dimensions}}" wx:key="label">
+      <view class="dimension-label">{{item.label}}</view>
+      <view class="badge badge-blue">{{item.value}}</view>
+    </view>
+  </view>
+
+  <view class="section card panel">
+    <view class="section-title">建议先做这三件事</view>
+    <view class="action-item" wx:for="{{result.actions}}" wx:key="*this">{{index + 1}}. {{item}}</view>
+  </view>
+
+  <view class="section card panel">
+    <view class="section-title">继续往下做</view>
+    <view class="grid-2">
+      <view class="action-card" bindtap="goProfit" hover-class="tap-scale">
+        <view class="action-card-title">利润测算</view>
+        <view class="action-card-desc">先把盈亏底线算清楚</view>
+      </view>
+      <view class="action-card" bindtap="goGuide" hover-class="tap-scale">
+        <view class="action-card-title">避坑指南</view>
+        <view class="action-card-desc">继续看行业与阶段清单</view>
+      </view>
+      <view class="action-card" bindtap="goArchive" hover-class="tap-scale">
+        <view class="action-card-title">经营档案</view>
+        <view class="action-card-desc">把待执行动作挂起来</view>
+      </view>
+      <view class="action-card" bindtap="goHome" hover-class="tap-scale">
+        <view class="action-card-title">返回首页</view>
+        <view class="action-card-desc">继续调整行业或重新发起</view>
+      </view>
+    </view>
+  </view>
+</view>

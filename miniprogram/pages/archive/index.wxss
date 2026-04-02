@@ -1,0 +1,99 @@
+.archive-hero {
+  background: linear-gradient(135deg, rgba(12, 27, 61, 0.96) 0%, rgba(46, 107, 255, 0.86) 100%);
+}
+
+.todo-card {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  padding: 22rpx 0;
+  border-bottom: 1rpx solid rgba(255,255,255,0.06);
+}
+
+.todo-card:last-child {
+  border-bottom: none;
+}
+
+.todo-check {
+  width: 46rpx;
+  height: 46rpx;
+  border-radius: 14rpx;
+  border: 1rpx solid rgba(92, 144, 255, 0.42);
+  background: rgba(46, 107, 255, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #DCE8FF;
+  font-size: 28rpx;
+  flex-shrink: 0;
+}
+
+.todo-text {
+  flex: 1;
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: #FFFFFF;
+}
+
+.todo-done .todo-check {
+  background: rgba(22, 163, 74, 0.18);
+  border-color: rgba(26, 180, 112, 0.34);
+}
+
+.todo-done .todo-text {
+  color: rgba(219, 229, 245, 0.52);
+  text-decoration: line-through;
+}
+
+.stat-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.08) 100%);
+  border-radius: 26rpx;
+  padding: 24rpx;
+  box-shadow: 0 16rpx 40rpx rgba(0,0,0,0.12);
+}
+
+.stat-value {
+  font-size: 38rpx;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 12rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: rgba(219, 229, 245, 0.72);
+}
+
+.record-item {
+  padding: 22rpx 0;
+  border-bottom: 1rpx solid rgba(255,255,255,0.06);
+}
+
+.record-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.record-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.record-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.record-time {
+  margin: 10rpx 0;
+  font-size: 24rpx;
+  color: rgba(219, 229, 245, 0.62);
+}
+
+.record-summary {
+  font-size: 27rpx;
+  line-height: 1.7;
+  color: rgba(219, 229, 245, 0.78);
+}

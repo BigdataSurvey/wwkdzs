@@ -1,0 +1,19 @@
+.picker-line {
+  margin-top: 18rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 22rpx;
+  padding: 0 22rpx;
+  background: rgba(255,255,255,0.06);
+  color: #FFFFFF;
+}
+
+.feedback-textarea {
+  width: 100%;
+  min-height: 280rpx;
+  margin-top: 18rpx;
+  padding: 20rpx;
+  border-radius: 22rpx;
+  background: rgba(255,255,255,0.06);
+  color: #FFFFFF;
+}

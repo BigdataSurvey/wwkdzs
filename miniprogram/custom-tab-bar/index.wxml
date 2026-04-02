@@ -1,0 +1,15 @@
+<view class="float-bar">
+  <view
+    class="bar-item {{selected === index ? 'bar-item-active' : ''}}"
+    wx:for="{{tabs}}"
+    wx:key="key"
+    data-index="{{index}}"
+    data-path="{{item.pagePath}}"
+    bindtap="switchTab"
+  >
+    <view class="bar-icon">{{item.icon}}</view>
+    <view class="bar-label">{{item.text}}</view>
+    <!-- 选中指示器 -->
+    <view class="bar-dot" wx:if="{{selected === index}}"></view>
+  </view>
+</view>

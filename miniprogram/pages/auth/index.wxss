@@ -1,0 +1,50 @@
+.auth-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 80rpx;
+}
+
+.auth-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 70rpx 0 48rpx;
+}
+
+.brand-title {
+  margin-top: 24rpx;
+  font-size: 52rpx;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.brand-subtitle {
+  margin-top: 16rpx;
+  font-size: 28rpx;
+  text-align: center;
+  line-height: 1.7;
+  color: rgba(219, 229, 245, 0.84);
+}
+
+.glass-panel {
+  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
+}
+
+.auth-copy {
+  margin-top: 16rpx;
+}
+
+.auth-point {
+  margin-top: 14rpx;
+  font-size: 26rpx;
+  color: #E5EFFF;
+}
+
+.auth-actions {
+  margin-top: 8rpx;
+}
+
+.top-gap {
+  margin-top: 18rpx;
+}

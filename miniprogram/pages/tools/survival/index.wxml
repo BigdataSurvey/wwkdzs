@@ -1,0 +1,18 @@
+<view class="page">
+  <view class="section hero-card">
+    <view class="hero-title">存活率参考</view>
+    <view class="hero-subtitle">首版先展示字段结构。正式版建议从云数据库按行业维护，并明确标注数据来源与更新时间。</view>
+  </view>
+
+  <view class="section card panel" wx:for="{{records}}" wx:key="industry">
+    <view class="title-row">
+      <view class="section-title">{{item.industry}}</view>
+      <view class="badge badge-gray">{{item.cycle}}</view>
+    </view>
+    <view class="list-line">
+      <view class="body-text">参考存活率区间</view>
+      <view class="badge badge-blue">{{item.rate}}</view>
+    </view>
+    <view class="body-text top-space">高频风险：{{item.risk}}</view>
+  </view>
+</view>

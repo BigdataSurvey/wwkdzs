@@ -1,0 +1,11 @@
+<view class="page">
+  <view class="section hero-card">
+    <view class="hero-title">更多工具</view>
+    <view class="hero-subtitle">这里作为工具页延伸内容容器，后续按收藏与高频使用率持续补齐。</view>
+  </view>
+
+  <view class="section card panel">
+    <view class="section-title">下一批优先补充</view>
+    <view class="list-line body-text" wx:for="{{tools}}" wx:key="*this">{{index + 1}}. {{item}}</view>
+  </view>
+</view>

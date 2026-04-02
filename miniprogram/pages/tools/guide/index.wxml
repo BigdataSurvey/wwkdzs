@@ -1,0 +1,14 @@
+<view class="page">
+  <view class="section hero-card">
+    <view class="hero-title">开店避坑指南</view>
+    <view class="hero-subtitle">后续这里会按行业 + 阶段从云数据库读取图文内容。当前先把承载结构搭好。</view>
+  </view>
+
+  <view class="section card panel" wx:for="{{sections}}" wx:key="title">
+    <view class="title-row">
+      <view class="section-title">{{item.title}}</view>
+      <view class="badge badge-blue">阶段清单</view>
+    </view>
+    <view class="list-line body-text" wx:for="{{item.items}}" wx:for-item="child" wx:key="*this">{{index + 1}}. {{child}}</view>
+  </view>
+</view>

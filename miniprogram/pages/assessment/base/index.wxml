@@ -1,0 +1,53 @@
+<view class="page">
+  <!-- 报告生成中遮罩层 -->
+  <view class="generating-overlay" wx:if="{{isGenerating}}">
+    <view class="generating-content">
+      <view class="generating-ring"></view>
+      <view class="generating-text">{{progressText}}</view>
+    </view>
+  </view>
+
+  <view class="section card panel progress-card">
+    <view class="title-row">
+      <view>
+        <view class="section-title">基础风险诊断</view>
+        <!-- 行业阶段锁定展示，不可点击 -->
+        <view class="section-desc locked-industry">
+          <text class="lock-icon">🔒</text>
+          <text>{{industryName}} · {{stageName}}</text>
+        </view>
+      </view>
+      <view class="badge badge-blue">共 {{questions.length}} 题</view>
+    </view>
+    <view class="progress-row">
+      <view class="progress-ring">
+        <view class="progress-ring-inner">
+          <view class="ring-num">{{currentIndex + 1}}</view>
+          <view class="ring-total">/{{questions.length}}</view>
+        </view>
+      </view>
+      <view class="progress-side">
+        <view class="progress-side-title">{{progressText}}</view>
+        <view class="progress-bar-wrap">
+          <view class="progress-bar-fill" style="width: {{progressPercent}}%"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section card panel">
+    <view class="question-title">{{questions[currentIndex].title}}</view>
+    <view class="question-desc">{{questions[currentIndex].desc}}</view>
+
+    <view class="option-item {{selectedIndex === index ? 'option-active' : ''}}" wx:for="{{questions[currentIndex].options}}" wx:key="text" data-index="{{index}}" bindtap="chooseOption" hover-class="tap-scale">
+      <view class="option-index">{{index + 1}}</view>
+      <view class="option-text">{{item.text}}</view>
+      <view class="option-check">{{selectedIndex === index ? '✓' : ''}}</view>
+    </view>
+  </view>
+
+  <view class="section action-row">
+    <view class="ghost-btn action-btn" bindtap="prevQuestion">上一题</view>
+    <view class="primary-btn action-btn submit-btn" bindtap="nextQuestion">{{currentIndex === questions.length - 1 ? '生成诊断报告' : '下一题'}}</view>
+  </view>
+</view>

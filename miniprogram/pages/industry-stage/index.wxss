@@ -1,0 +1,202 @@
+/* 两步交互页面 */
+.step-page {
+  overflow: hidden;
+  padding: 0;
+}
+
+/* 步骤指示器 */
+.step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx 0 30rpx;
+}
+
+.step-dot {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  color: #A0AAB5;
+  font-size: 26rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.step-dot-active {
+  background: linear-gradient(135deg, #3B82F6 0%, #2E6BFF 100%);
+  color: #FFFFFF;
+  box-shadow: 0 8rpx 24rpx rgba(46, 107, 255, 0.4);
+}
+
+.step-line {
+  width: 120rpx;
+  height: 4rpx;
+  background: rgba(255,255,255,0.1);
+  margin: 0 20rpx;
+  transition: all 0.3s ease;
+}
+
+.step-line-active {
+  background: linear-gradient(90deg, #3B82F6 0%, #2E6BFF 100%);
+}
+
+/* 步骤容器 - 横向滑动 */
+.step-container {
+  display: flex;
+  width: 200%;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step-panel {
+  width: 50%;
+  padding: 0 32rpx 40rpx;
+  box-sizing: border-box;
+}
+
+/* 步骤头部 */
+.step-header {
+  margin-bottom: 40rpx;
+}
+
+.step-back {
+  color: #A0AAB5;
+  font-size: 26rpx;
+  margin-bottom: 16rpx;
+}
+
+.step-title {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 12rpx;
+}
+
+.step-subtitle {
+  font-size: 28rpx;
+  color: #A0AAB5;
+  line-height: 1.6;
+}
+
+/* 行业选择网格 */
+.industry-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.industry-card {
+  position: relative;
+  width: calc(50% - 10rpx);
+  min-height: 200rpx;
+  padding: 28rpx;
+  border-radius: 28rpx;
+  border: 2rpx solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  box-sizing: border-box;
+  transition: all 0.25s ease;
+}
+
+.industry-active {
+  border-color: rgba(92, 144, 255, 0.6);
+  background: linear-gradient(135deg, rgba(46, 107, 255, 0.18) 0%, rgba(46, 107, 255, 0.08) 100%);
+  box-shadow: 0 20rpx 50rpx rgba(46, 107, 255, 0.2);
+}
+
+.industry-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 24rpx;
+  background: rgba(46, 107, 255, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  color: #DDE9FF;
+  font-weight: 700;
+  margin-bottom: 20rpx;
+}
+
+.industry-name {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 8rpx;
+}
+
+.industry-tag {
+  font-size: 24rpx;
+  color: #A0AAB5;
+  line-height: 1.5;
+}
+
+.industry-check {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: #2E6BFF;
+  color: #FFFFFF;
+  font-size: 26rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 阶段选择列表 */
+.stage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+}
+
+.stage-card {
+  padding: 28rpx 24rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 24rpx;
+  background: rgba(255,255,255,0.04);
+  border: 2rpx solid rgba(255,255,255,0.08);
+  transition: all 0.25s ease;
+}
+
+.stage-active {
+  background: linear-gradient(135deg, rgba(46, 107, 255, 0.18) 0%, rgba(46, 107, 255, 0.08) 100%);
+  border-color: rgba(92, 144, 255, 0.6);
+}
+
+.stage-content {
+  flex: 1;
+}
+
+.stage-name {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 8rpx;
+}
+
+.stage-desc {
+  font-size: 26rpx;
+  line-height: 1.6;
+  color: #A0AAB5;
+}
+
+.stage-check {
+  width: 48rpx;
+  text-align: right;
+  font-size: 36rpx;
+  color: #2E6BFF;
+}
+
+/* 底部操作区 */
+.step-action {
+  margin-top: 40rpx;
+  padding: 0 10rpx;
+}

@@ -1,0 +1,46 @@
+<view class="page">
+  <block wx:if="{{unlocked}}">
+    <view class="section card panel progress-card">
+      <view class="title-row">
+        <view>
+          <view class="section-title">专业深度诊断</view>
+          <view class="section-desc">{{industryName}} · 第 {{currentIndex + 1}} / {{questions.length}} 题</view>
+        </view>
+        <view class="badge badge-green">已解锁</view>
+      </view>
+      <view class="progress-track">
+        <view class="progress-value" style="width: {{((currentIndex + 1) / questions.length) * 100}}%;"></view>
+      </view>
+    </view>
+
+    <view class="section card panel question-card">
+      <view class="question-title">{{questions[currentIndex].title}}</view>
+      <view class="question-desc">更关注经营模型、现金流与增长结构。</view>
+
+      <view class="option-item {{selectedIndex === index ? 'option-active' : ''}}" wx:for="{{questions[currentIndex].options}}" wx:key="text" data-index="{{index}}" bindtap="chooseOption">
+        <view class="option-index">{{index + 1}}</view>
+        <view class="option-text">{{item.text}}</view>
+        <view class="option-check">{{selectedIndex === index ? '✓' : ''}}</view>
+      </view>
+    </view>
+
+    <view class="section action-row">
+      <view class="ghost-btn action-btn" bindtap="prevQuestion">上一题</view>
+      <view class="primary-btn action-btn" bindtap="nextQuestion">{{currentIndex === questions.length - 1 ? '提交诊断' : '下一题'}}</view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="section hero-card lock-hero">
+      <view class="hero-title">专业深度诊断未解锁</view>
+      <view class="hero-subtitle">先完成基础风险诊断，系统会自动解锁深度诊断入口。</view>
+    </view>
+    <view class="section card panel">
+      <view class="section-title">为什么要先做基础诊断？</view>
+      <view class="reason-item">先确认项目是否值得继续投入</view>
+      <view class="reason-item">避免一上来就陷入复杂分析</view>
+      <view class="reason-item">后续报告会基于基础结果继续深化</view>
+      <view class="primary-btn top-gap" bindtap="goBase">去做基础诊断</view>
+    </view>
+  </block>
+</view>

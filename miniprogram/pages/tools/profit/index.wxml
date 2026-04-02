@@ -1,0 +1,29 @@
+<view class="page">
+  <view class="section hero-card">
+    <view class="hero-title">利润测算器</view>
+    <view class="hero-subtitle">点击计算结果时加入轻微触觉反馈，增强“结果已确认”的感受。</view>
+  </view>
+
+  <view class="section card panel">
+    <view class="section-title">输入关键经营参数</view>
+    <view class="form-list">
+      <view class="field-line" wx:for="{{fields}}" wx:key="key">
+        <view class="field-label">{{item.label}}</view>
+        <input class="field-input" type="digit" value="{{form[item.key]}}" data-key="{{item.key}}" bindinput="onInput" />
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="primary-btn" bindtap="calculate">计算利润结果</view>
+  </view>
+
+  <view class="section card panel" wx:if="{{result}}">
+    <view class="section-title">测算结果</view>
+    <view class="result-line"><text>月营业额</text><text>{{result.monthlyRevenue}} 元</text></view>
+    <view class="result-line"><text>月毛利</text><text>{{result.grossProfit}} 元</text></view>
+    <view class="result-line"><text>月固定成本</text><text>{{result.fixedCost}} 元</text></view>
+    <view class="result-line strong-line"><text>预估月利润</text><text>{{result.estimatedProfit}} 元</text></view>
+    <view class="result-tip">盈亏平衡点约为日均 {{result.breakevenCustomers}} 位顾客。</view>
+  </view>
+</view>

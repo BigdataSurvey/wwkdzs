@@ -1,0 +1,24 @@
+.ai-card {
+  width: 48.2%;
+  margin-bottom: 18rpx;
+  padding: 24rpx;
+  border-radius: 28rpx;
+  background: linear-gradient(180deg, rgba(90, 87, 255, 0.18) 0%, rgba(255,255,255,0.08) 100%);
+  border: 1rpx solid rgba(255,255,255,0.08);
+  box-shadow: 0 18rpx 44rpx rgba(0,0,0,0.16);
+}
+
+.ai-card-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 12rpx;
+}
+
+.ai-card-desc {
+  min-height: 92rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: rgba(219, 229, 245, 0.76);
+  margin-bottom: 18rpx;
+}

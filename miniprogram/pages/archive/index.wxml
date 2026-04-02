@@ -1,0 +1,53 @@
+<view class="page">
+  <view class="section hero-card archive-hero">
+    <view class="hero-title">经营档案</view>
+    <view class="hero-subtitle">这里不是流水账。它要优先展示还没做完的动作，让用户有“我下次还要回来划掉它”的心理钩子。</view>
+  </view>
+
+  <view class="section card panel">
+    <view class="title-row">
+      <view>
+        <view class="section-title">待执行动作</view>
+        <view class="section-desc">点击即可划掉，建议后续接数据库后同步保存完成状态。</view>
+      </view>
+      <view class="badge badge-green">留存抓手</view>
+    </view>
+
+    <view class="todo-card {{item.done ? 'todo-done' : ''}}" wx:for="{{tasks}}" wx:key="text" data-index="{{index}}" bindtap="toggleTask" hover-class="tap-scale">
+      <view class="todo-check">{{item.done ? '✓' : ''}}</view>
+      <view class="todo-text">{{item.text}}</view>
+    </view>
+  </view>
+
+  <view class="section grid-2">
+    <view class="stat-card" wx:for="{{stats}}" wx:key="label">
+      <view class="stat-value">{{item.value}}</view>
+      <view class="stat-label">{{item.label}}</view>
+    </view>
+  </view>
+
+  <view class="section card panel">
+    <view class="title-row">
+      <view>
+        <view class="section-title">最近记录</view>
+        <view class="section-desc">真正接云开发后，这里按时间倒序拉用户诊断与测算记录。</view>
+      </view>
+      <view class="link-text" bindtap="openResult">示例报告</view>
+    </view>
+
+    <block wx:if="{{records.length}}">
+      <view class="record-item" wx:for="{{records}}" wx:key="time">
+        <view class="record-top">
+          <view class="record-title">{{item.type}} · {{item.industry}}</view>
+          <view class="badge badge-blue">评分 {{item.score}}</view>
+        </view>
+        <view class="record-time">{{item.time}} · {{item.stage}}</view>
+        <view class="record-summary">{{item.summary}}</view>
+      </view>
+    </block>
+
+    <block wx:else>
+      <view class="empty-desc">你还没有生成过新的诊断记录。先回首页发起一次基础诊断。</view>
+    </block>
+  </view>
+</view>

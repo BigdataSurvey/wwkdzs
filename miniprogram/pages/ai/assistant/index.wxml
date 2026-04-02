@@ -1,0 +1,14 @@
+<view class="page">
+  <view class="section hero-card">
+    <view class="hero-title">AI 助手</view>
+    <view class="hero-subtitle">你已经明确：AI 首版先不接。这里先做入口、结构和后续承载位。</view>
+  </view>
+
+  <view class="grid-2">
+    <view class="section ai-card" wx:for="{{cards}}" wx:key="title">
+      <view class="ai-card-title">{{item.title}}</view>
+      <view class="ai-card-desc">{{item.desc}}</view>
+      <view class="badge badge-orange">暂未接入</view>
+    </view>
+  </view>
+</view>

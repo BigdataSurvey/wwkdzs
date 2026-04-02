@@ -1,0 +1,55 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/industry-stage/index",
+    "pages/tools/index",
+    "pages/archive/index",
+    "pages/user/index",
+    "pages/assessment/base/index",
+    "pages/result/index",
+    "pages/tools/profit/index",
+    "pages/tools/guide/index",
+    "pages/tools/survival/index",
+    "pages/tools/more/index",
+    "pages/ai/assistant/index",
+    "pages/contact/contact",
+    "pages/feedback/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#0A0A0F",
+    "navigationBarTitleText": "稳稳开店助手",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#0A0A0F"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#6B7280",
+    "selectedColor": "#2E6BFF",
+    "backgroundColor": "#0A0A0F",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tabbar/home_normal.png",
+        "selectedIconPath": "images/tabbar/home_active.png"
+      },
+      {
+        "pagePath": "pages/tools/index",
+        "text": "工具箱",
+        "iconPath": "images/tabbar/tools_normal.png",
+        "selectedIconPath": "images/tabbar/tools_active.png"
+      },
+      {
+        "pagePath": "pages/archive/index",
+        "text": "我的档案",
+        "iconPath": "images/tabbar/archive_normal.png",
+        "selectedIconPath": "images/tabbar/archive_active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

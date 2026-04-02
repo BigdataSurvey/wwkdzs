@@ -1,0 +1,29 @@
+<view class="page">
+  <view class="section card panel user-header">
+    <image class="logo-md" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+    <view class="user-name">{{userInfo.nickName}}</view>
+    <view class="user-desc">必须微信授权登录，不开放游客模式。后续所有记录走云开发同步。</view>
+  </view>
+
+  <view class="section grid-2">
+    <view class="stat-mini" wx:for="{{stats}}" wx:key="label">
+      <view class="stat-mini-value">{{item.value}}</view>
+      <view class="stat-mini-label">{{item.label}}</view>
+    </view>
+  </view>
+
+  <view class="section menu-card" wx:for="{{menus}}" wx:key="title" data-path="{{item.path}}" bindtap="onMenuTap" hover-class="tap-scale">
+    <view>
+      <view class="menu-title">{{item.title}}</view>
+      <view class="menu-desc">{{item.desc}}</view>
+    </view>
+    <view class="menu-arrow">›</view>
+  </view>
+
+  <view class="section card panel">
+    <view class="section-title">首版说明</view>
+    <view class="list-line body-text">先把首页发起率、基础诊断完成率、档案留存钩子三件事跑通。</view>
+    <view class="list-line body-text">题库、行业、阶段和避坑内容都预留为云数据库配置项。</view>
+    <view class="list-line body-text">AI 首版只预留入口，不接真实接口。</view>
+  </view>
+</view>

@@ -1,0 +1,68 @@
+.user-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.user-name {
+  margin-top: 22rpx;
+  font-size: 38rpx;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.user-desc {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  line-height: 1.7;
+  color: rgba(219, 229, 245, 0.78);
+}
+
+.stat-mini {
+  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.08) 100%);
+  border-radius: 26rpx;
+  padding: 24rpx;
+  box-shadow: 0 16rpx 40rpx rgba(0,0,0,0.12);
+}
+
+.stat-mini-value {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 10rpx;
+}
+
+.stat-mini-label {
+  font-size: 24rpx;
+  color: rgba(219, 229, 245, 0.72);
+}
+
+.menu-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28rpx;
+  border-radius: 28rpx;
+  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.08) 100%);
+  box-shadow: 0 18rpx 40rpx rgba(0,0,0,0.12);
+  margin-bottom: 18rpx;
+}
+
+.menu-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 10rpx;
+}
+
+.menu-desc {
+  font-size: 25rpx;
+  line-height: 1.6;
+  color: rgba(219, 229, 245, 0.72);
+}
+
+.menu-arrow {
+  font-size: 38rpx;
+  color: rgba(219, 229, 245, 0.6);
+}

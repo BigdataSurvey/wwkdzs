@@ -1,0 +1,22 @@
+<view class="page auth-page">
+  <view class="auth-top">
+    <image class="logo-md" src="/images/logo.png" mode="aspectFill"></image>
+    <view class="brand-title">稳稳开店助手</view>
+    <view class="brand-subtitle">先做体检，再决定投不投、怎么投。</view>
+  </view>
+
+  <view class="section card panel glass-panel">
+    <view class="section-title">登录后才能开始体验</view>
+    <view class="body-text auth-copy">首版先采用强登录模式。后续会将诊断记录、收藏、复测进度和经营档案全部保存到微信云开发。</view>
+    <view class="auth-points">
+      <view class="auth-point">· 保存历史诊断记录</view>
+      <view class="auth-point">· 同步经营档案与待执行动作</view>
+      <view class="auth-point">· 收藏指南与解锁后续深度诊断</view>
+    </view>
+  </view>
+
+  <view class="section card panel auth-actions">
+    <button class="primary-btn" bindtap="onLogin" loading="{{loading}}" disabled="{{loading}}">微信授权登录</button>
+    <view class="ghost-btn top-gap" bindtap="onMockLogin">演示模式快速进入</view>
+  </view>
+</view>

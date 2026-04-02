@@ -1,0 +1,15 @@
+<view class="page">
+  <view class="section hero-card tools-hero">
+    <view class="hero-title">工具中心</view>
+    <view class="hero-subtitle">少讲说明，多用步骤感和角标做 UI 引导。先用工具判断，再做决策。</view>
+  </view>
+
+  <view class="section tool-list-card" wx:for="{{primaryTools}}" wx:key="title" data-path="{{item.path}}" bindtap="openTool" hover-class="tap-scale">
+    <view class="tool-list-top">
+      <view class="tool-list-title">{{item.title}}</view>
+      <view class="badge {{item.tag === '参考' ? 'badge-gray' : (item.tag === '延伸' ? 'badge-orange' : 'badge-blue')}}">{{item.tag}}</view>
+    </view>
+    <view class="tool-list-desc">{{item.desc}}</view>
+    <view class="tool-list-link">进入工具</view>
+  </view>
+</view>

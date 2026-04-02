@@ -1,0 +1,13 @@
+<view class="page">
+  <view class="section hero-card">
+    <view class="hero-title">联系我们</view>
+    <view class="hero-subtitle">当前先保留咨询与反馈承载位。你后续可以把企微、公众号、客服微信都接进来。</view>
+  </view>
+
+  <view class="section card panel">
+    <view class="section-title">服务入口</view>
+    <view class="list-line body-text">商务合作：后续补企业微信二维码</view>
+    <view class="list-line body-text">问题反馈：请到“我的 - 问题反馈”提交</view>
+    <view class="list-line body-text">内容合作：可同步避坑图文、行业资料与案例征集</view>
+  </view>
+</view>
