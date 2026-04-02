@@ -1,83 +1,62 @@
+<image class="custom-bg" src="../../images/bg.png" mode="aspectFill"></image>
+
 <view class="page home-page">
-  <!-- 千人千面 · 行业水印 -->
-  <view class="industry-watermark {{watermarkChar ? 'visible' : ''}}">
-    <text>{{watermarkChar}}</text>
-  </view>
-
-  <!-- 暗光晕装饰 -->
-  <view class="glow glow-blue"></view>
-  <view class="glow glow-purple"></view>
-
-  <!-- ① 情绪大标题 -->
   <view class="headline-section">
-    <view class="headline-line1">真金白银砸下去之前</view>
-    <view class="headline-line2">先摸清你的<text class="hl-brand">盈利底牌</text>。</view>
+    <view class="headline-sub">真金白银砸下去之前</view>
+    <view class="headline-main">
+      先摸清你的<text class="hl-gradient">盈利底牌</text>
+    </view>
   </view>
 
-  <!-- ② 胶囊按钮区 -->
   <view class="capsule-row">
-    <view class="capsule {{shakeIndustry ? 'shake' : ''}}" bindtap="goSelectIndustry" hover-class="tap-scale">
+    <view class="capsule-primary {{shakeIndustry ? 'shake pulse-once' : (!selection.industryId ? 'pulse-infinite' : '')}}" bindtap="goSelectIndustry" hover-class="tap-scale">
       <text class="capsule-icon">🎯</text>
-      <text class="capsule-text">{{selection.industryId ? selection.industryName : '行业：未设置'}}</text>
+      <text class="capsule-text">{{selectionDisplayText}}</text>
     </view>
-    <view class="capsule" bindtap="goArchive" hover-class="tap-scale">
-      <text class="capsule-icon">📊</text>
-      <text class="capsule-text">档案：{{diagnosisCount}}次体检</text>
+    <view class="capsule-ghost" bindtap="goArchive" hover-class="tap-scale">
+      <text class="capsule-icon-ghost">📊</text>
+      <text class="capsule-text-ghost">{{diagnosisCount || 0}}次体检</text>
     </view>
   </view>
 
-  <!-- ③ C位卡片：基础排雷体检 -->
-  <view class="feature-card card-primary" bindtap="goBaseAssessment" hover-class="tap-scale">
-    <view class="card-glow card-glow-blue"></view>
+  <view class="feature-card card-primary-light" bindtap="goBaseAssessment" hover-class="tap-scale">
     <view class="card-body">
       <view class="card-icon-wrap">
-        <view class="icon-3d icon-shield">
-          <text class="icon-inner">🛡️</text>
-        </view>
+        <view class="icon-3d icon-shield-light"><text class="icon-inner">🛡️</text></view>
       </view>
       <view class="card-content">
         <view class="card-main-title">基础排雷体检</view>
-        <view class="card-sub-title">{{questions.length}}道题，测算你踩坑的概率</view>
+        <view class="card-sub-title">15道核心题，测算踩坑概率</view>
       </view>
     </view>
-    <view class="shimmer-btn">
-      <view class="shimmer-light"></view>
-      <text>开始体检</text>
-    </view>
+    <view class="shimmer-btn-light"><text>开始体检</text></view>
   </view>
 
-  <!-- ④ 次级卡片：深度专业诊断 -->
-  <view class="feature-card card-locked">
+  <view class="feature-card card-locked-light">
     <view class="card-body">
       <view class="card-icon-wrap">
-        <view class="icon-3d icon-lock">
-          <text class="icon-inner">🔒</text>
-        </view>
+        <view class="icon-3d icon-lock-light"><text class="icon-inner">🔒</text></view>
       </view>
       <view class="card-content">
         <view class="card-main-title">深度专业诊断</view>
-        <view class="card-sub-title">现金流与复购测算模型，深度把脉</view>
+        <view class="card-sub-title">现金流与复购率测算模型</view>
       </view>
     </view>
-    <view class="lock-tag">未解锁</view>
+    <view class="lock-tag-light">未解锁</view>
   </view>
 
-  <!-- ⑤ 工具卡片：AI 经营大脑 -->
-  <view class="feature-card card-aurora" bindtap="goTools" hover-class="tap-scale">
+  <view class="feature-card card-ai-light" bindtap="goTools" hover-class="tap-scale">
     <view class="card-body">
       <view class="card-icon-wrap">
-        <view class="icon-3d icon-ai">
-          <text class="icon-inner">🤖</text>
-        </view>
+        <view class="icon-3d icon-ai-light"><text class="icon-inner">🤖</text></view>
       </view>
       <view class="card-content">
         <view class="card-main-title">AI 经营大脑</view>
         <view class="card-sub-title">起名 / 写文案 / 算利润，一秒出活</view>
       </view>
     </view>
-    <view class="hot-tag">高频</view>
+    <view class="hot-tag-light">高频</view>
   </view>
 
-  <!-- 底部安全距离 -->
-  <view style="height: 200rpx;"></view>
+  <view style="height: 240rpx;"></view>
 </view>

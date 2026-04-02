@@ -1,6 +1,5 @@
 import { INDUSTRIES, STAGES } from '../../data/mock'
 import { getSelectionState, setSelectionState } from '../../utils/storage'
-import { pulse } from '../../utils/haptics'
 
 Page({
   data: {
@@ -28,14 +27,13 @@ Page({
   chooseIndustry(e: any) {
     const id = Number(e.currentTarget.dataset.id)
     const industry = INDUSTRIES.find(i => i.id === id)
-    
-    pulse()
+
     this.setData({
       selectedIndustryId: id,
       selectedIndustryName: industry?.name || '',
       selectedStageKey: '' // 切换行业时重置阶段
     })
-    
+
     // 选中后自动进入下一步
     setTimeout(() => {
       this.setData({ step: 2 })
@@ -43,7 +41,6 @@ Page({
   },
 
   chooseStage(e: any) {
-    pulse()
     this.setData({
       selectedStageKey: e.currentTarget.dataset.key
     })

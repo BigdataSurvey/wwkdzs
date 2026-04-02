@@ -1,30 +1,23 @@
+<image class="custom-bg" src="../../images/bg.png" mode="aspectFill"></image>
+
 <view class="page step-page">
-  <!-- 步骤指示器 -->
-  <view class="step-indicator">
-    <view class="step-dot {{step >= 1 ? 'step-dot-active' : ''}}">1</view>
-    <view class="step-line {{step >= 2 ? 'step-line-active' : ''}}"></view>
-    <view class="step-dot {{step >= 2 ? 'step-dot-active' : ''}}">2</view>
+  <view class="progress-header">
+    <view class="progress-title">{{step === 1 ? '选择经营行业' : '选择经营阶段'}}</view>
+    <view class="progress-bar-container">
+      <view class="progress-bar-fill" style="width: {{step === 1 ? '50%' : '100%'}}"></view>
+    </view>
+    <view class="progress-labels">
+      <text class="{{step >= 1 ? 'label-active' : ''}}">选择行业</text>
+      <text class="{{step >= 2 ? 'label-active' : ''}}">确认阶段</text>
+    </view>
   </view>
 
-  <!-- 步骤容器 -->
-  <view class="step-container" style="transform: translateX({{step === 1 ? '0' : '-100%'}});">
-    
-    <!-- Step 1: 选择行业 -->
+  <view class="step-container" style="transform: translateX({{step === 1 ? '0' : '-50%'}});">
+
     <view class="step-panel">
-      <view class="step-header">
-        <view class="step-title">你打算做什么行业？</view>
-        <view class="step-subtitle">不同行业的风险点、成本结构、回本周期差异很大</view>
-      </view>
-      
+      <view class="step-subtitle-top">不同行业的风险点、成本结构差异很大</view>
       <view class="industry-grid">
-        <view 
-          class="industry-card {{selectedIndustryId === item.id ? 'industry-active' : ''}}" 
-          wx:for="{{industries}}" 
-          wx:key="id" 
-          data-id="{{item.id}}" 
-          bindtap="chooseIndustry" 
-          hover-class="tap-scale"
-        >
+        <view class="industry-card {{selectedIndustryId === item.id ? 'industry-active' : ''}}" wx:for="{{industries}}" wx:key="id" data-id="{{item.id}}" bindtap="chooseIndustry" hover-class="tap-scale">
           <view class="industry-icon">{{item.icon}}</view>
           <view class="industry-name">{{item.name}}</view>
           <view class="industry-tag">{{item.tag}}</view>
@@ -32,36 +25,34 @@
         </view>
       </view>
     </view>
-    
-    <!-- Step 2: 选择阶段 -->
+
     <view class="step-panel">
-      <view class="step-header">
-        <view class="step-back" bindtap="goBack">← 返回修改行业</view>
-        <view class="step-title">你目前处于哪个阶段？</view>
-        <view class="step-subtitle">{{selectedIndustryName}} · 不同阶段的诊断侧重点完全不同</view>
+      <view class="breadcrumb" bindtap="goBack" hover-class="tap-scale">
+        <text class="bc-prev">‹ {{selectedIndustryName}}</text>
+        <text class="bc-divider">/</text>
+        <text class="bc-curr">当前阶段</text>
       </view>
-      
+
       <view class="stage-list">
-        <view 
-          class="stage-card {{selectedStageKey === item.key ? 'stage-active' : ''}}" 
-          wx:for="{{stages}}" 
-          wx:key="key" 
-          data-key="{{item.key}}" 
-          bindtap="chooseStage" 
-          hover-class="tap-scale"
-        >
-          <view class="stage-content">
-            <view class="stage-name">{{item.name}}</view>
-            <view class="stage-desc">{{item.desc}}</view>
+        <view class="stage-card-pro {{selectedStageKey === item.key ? 'stage-active-pro' : ''}}" wx:for="{{stages}}" wx:key="key" data-key="{{item.key}}" bindtap="chooseStage" hover-class="tap-scale-card">
+          <view class="sc-header">
+            <view class="sc-title"><text class="sc-icon">{{item.icon}}</text>{{item.name}}</view>
+            <view class="sc-radio">
+              <view class="radio-inner" wx:if="{{selectedStageKey === item.key}}"></view>
+            </view>
           </view>
-          <view class="stage-check">{{selectedStageKey === item.key ? '✓' : ''}}</view>
+          <view class="sc-divider"></view>
+          <view class="sc-desc">{{item.desc}}</view>
+          <view class="sc-scenario">{{item.scenario}}</view>
+          <view class="active-indicator" wx:if="{{selectedStageKey === item.key}}"></view>
         </view>
       </view>
-      
+
       <view class="step-action" wx:if="{{selectedStageKey}}">
-        <view class="primary-btn" bindtap="saveSelection">确认并开始诊断</view>
+        <view class="safe-tips">预估 3-5 分钟 · 15 道核心排雷题</view>
+        <view class="primary-btn" bindtap="saveSelection" hover-class="btn-hover">确认并开始诊断</view>
       </view>
     </view>
-    
+
   </view>
 </view>
