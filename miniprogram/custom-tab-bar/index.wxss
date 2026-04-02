@@ -1,67 +1,89 @@
-/* ======== 悬浮毛玻璃导航栏 (亮色高定版) ======== */
-.float-bar {
+/* ======== 悬浮毛玻璃导航栏 (终极纯正 iOS 原生版) ======== */
+
+.float-bar-ios {
   position: fixed;
-  bottom: 36rpx;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 0;
+  left: 0;
+  width: 100vw;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12rpx;
-  padding: 16rpx 32rpx;
-  min-width: 520rpx;
-  border-radius: 999rpx;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(40rpx);
-  -webkit-backdrop-filter: blur(40rpx);
-  border: 1rpx solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 24rpx 60rpx rgba(0, 0, 0, 0.08);
+  align-items: flex-start;
+  justify-content: space-around;
+  
+  padding-top: 16rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom, 20rpx));
+  
+  /* 🚨 优化 2：背景稍微“实”一点，形成：背景图 -> 0.75 毛玻璃 -> 纯白卡片 的完美物理过渡 */
+  background: rgba(255, 255, 255, 0.75); 
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  
+  /* 🚨 优化 3：极度克制但不可或缺的 0.5px 顶部边界分割线 */
+  border-top: 0.5px solid rgba(0, 0, 0, 0.08);
+  /* 加入极其微弱的阴影，让它浮在背景上 */
+  box-shadow: 0 -4rpx 24rpx rgba(0, 0, 0, 0.03);
   z-index: 9999;
 }
 
-.bar-item {
+.bar-item-ios {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  width: 160rpx;
+  height: 90rpx;
+  transition: transform 0.2s ease;
+}
+
+.item-hover {
+  transform: scale(0.92);
+}
+
+.icon-core {
+  display: flex;
+  align-items: center;
   justify-content: center;
-  width: 140rpx;
-  height: 84rpx;
-  border-radius: 20rpx;
-  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 64rpx;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* 优化：极其明显的选中底色 */
-.bar-item-active {
+/* 统一控制图片的大小 */
+.icon-img {
+  width: 52rpx;
+  height: 52rpx;
+  transition: all 0.3s ease;
+}
+
+
+.bar-item-ios:not(.item-active-ios) .icon-img {
+  opacity: 1; /* 保持全透亮 */
+}
+
+/* 🚨 优化 4：选中态图标微上浮，恢复本身高亮的蓝色填充 */
+.item-active-ios .icon-core {
+  transform: translateY(-4rpx);
+}
+.item-active-ios .icon-img {
+  transform: scale(1.08); /* 微微膨胀 */
+  filter: none;
+  opacity: 1;
+}
+
+/* 🚨 优化 5：大号实心自信蓝点指示器 */
+.dot-indicator {
+  width: 10rpx; /* 加大视觉比重 */
+  height: 10rpx;
+  border-radius: 50%;
   background: #2E6BFF;
-  box-shadow: 0 8rpx 20rpx rgba(46, 107, 255, 0.2);
+  margin-top: 6rpx;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.bar-icon {
-  font-size: 36rpx;
-  line-height: 1;
-  margin-bottom: 4rpx;
-  transition: transform 0.25s ease;
-}
-
-.bar-item-active .bar-icon {
-  transform: translateY(2rpx);
-}
-
-.bar-label {
-  font-size: 20rpx;
-  color: #9CA3AF;
-  font-weight: 500;
-  transition: color 0.25s ease;
-}
-
-/* 选中态：字和图标全变白 */
-.bar-item-active .bar-label {
-  color: #FFFFFF;
-  font-weight: 600;
-}
-
-/* 隐藏原有的小圆点，因为底色已经足够明确 */
-.bar-dot {
-  display: none;
+/* 选中时蓝点 Q弹出现并微发光 */
+.item-active-ios .dot-indicator {
+  opacity: 1;
+  transform: scale(1);
+  box-shadow: 0 4rpx 10rpx rgba(46, 107, 255, 0.4);
 }

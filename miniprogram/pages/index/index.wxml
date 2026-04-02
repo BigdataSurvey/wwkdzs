@@ -34,30 +34,37 @@
     <view class="shimmer-btn-light"><text>开始体检</text></view>
   </view>
 
-  <view class="feature-card card-glassmorphism">
+  <view class="card-pro-apple">
+    <view class="shimmer-sweep"></view>
     <view class="card-body">
       <view class="card-icon-wrap">
-        <view class="icon-3d icon-lock-light"><text class="icon-inner">🔒</text></view>
+        <view class="icon-lock-pro"><text class="icon-inner">👑</text></view>
       </view>
       <view class="card-content">
-        <view class="card-main-title">深度专业诊断</view>
-        <view class="card-sub-title">现金流与复购率测算模型</view>
+        <view class="pro-text-main">深度专业诊断 <text class="pro-badge-apple">PRO</text></view>
+        <view class="pro-sub-text">现金流与复购率核心测算</view>
+        <view class="lock-tag-apple">🔒 基础体检后开启</view>
       </view>
     </view>
-    <view class="lock-tag-pro">🔒 完成体检后解锁</view>
   </view>
 
-  <view class="feature-card card-ai-light" bindtap="goTools" hover-class="tap-scale">
+  <view class="feature-card card-ai-magic" bindtap="goTools" hover-class="tap-scale">
     <view class="card-body">
       <view class="card-icon-wrap">
-        <view class="icon-3d icon-ai-light"><text class="icon-inner">🤖</text></view>
+        <view class="icon-3d icon-ai-magic-base"><text class="icon-inner">✨</text></view>
       </view>
       <view class="card-content">
-        <view class="card-main-title">AI 经营大脑</view>
-        <view class="card-sub-title">起名 / 写文案 / 算利润，一秒出活</view>
+        <view class="card-main-title ai-text-gradient">AI 智能商业参谋</view>
+        <view class="card-sub-title">选址 / 算账 / 营销，你的全能外脑</view>
+        <view class="live-tag">
+          <view class="live-dot"></view>
+          <text>今日已有 {{aiUsageCount}} 人求教</text>
+        </view>
       </view>
     </view>
-    <view class="hot-tag-light">高频</view>
+
+    <view class="new-badge-magic">新功能</view>
+
   </view>
 
   <view style="height: 240rpx;"></view>

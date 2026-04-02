@@ -1,5 +1,6 @@
 import { INDUSTRIES, STAGES } from '../../data/mock'
 import { getSelectionState, setSelectionState } from '../../utils/storage'
+import { pulse } from '../../utils/haptics'
 
 Page({
   data: {
@@ -28,6 +29,7 @@ Page({
     const id = Number(e.currentTarget.dataset.id)
     const industry = INDUSTRIES.find(i => i.id === id)
 
+    pulse()
     this.setData({
       selectedIndustryId: id,
       selectedIndustryName: industry?.name || '',
@@ -41,6 +43,7 @@ Page({
   },
 
   chooseStage(e: any) {
+    pulse()
     this.setData({
       selectedStageKey: e.currentTarget.dataset.key
     })
