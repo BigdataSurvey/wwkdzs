@@ -14,11 +14,11 @@ Page({
     const type = options.type || 'base';
     const industryId = Number(options.industryId) || 0;
 
-    // 逻辑：计算风险评级与警示色
+    // 🚨 规范化的动态色阶
     let level = '高风险';
-    let levelColor = '#FF4D4F'; // 红/橙
-    if (score >= 80) { level = '低风险'; levelColor = '#10B981'; } // 绿
-    else if (score >= 60) { level = '中等风险'; levelColor = '#F59E0B'; } // 黄
+    let levelColor = '#FF4D4F'; // 红色
+    if (score >= 80) { level = '低风险'; levelColor = '#10B981'; } // 绿色
+    else if (score >= 60) { level = '中等风险'; levelColor = '#F59E0B'; } // 琥珀色
 
     const windowInfo = wx.getWindowInfo();
     const menuButton = wx.getMenuButtonBoundingClientRect();
@@ -31,6 +31,6 @@ Page({
     });
   },
 
-  goHome() { wx.switchTab({ url: '/pages/index/index' }); },
-  reTest() { wx.navigateBack({ delta: 1 }); }
+  goBack() { wx.navigateBack({ delta: 1 }); },
+  reTest() { wx.redirectTo({ url: `/pages/assessment/base/index?industryId=${this.data.industryId}` }); }
 });
