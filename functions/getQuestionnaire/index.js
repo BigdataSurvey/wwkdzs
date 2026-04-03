@@ -4,7 +4,7 @@ const db = cloud.database()
 
 exports.main = async () => {
   try {
-    // 🚨 核心修复：指向我们在云数据库里建好的 selection_config 表
+    // 🚨 必须去查 selection_config 这个我们刚刚建好的表！
     const [indRes, staRes] = await Promise.all([
       db.collection('selection_config').doc('config_industries').get(),
       db.collection('selection_config').doc('config_stages').get()
@@ -20,10 +20,6 @@ exports.main = async () => {
     }
   } catch (err) {
     console.error('云函数执行报错:', err)
-    return {
-      code: -1,
-      msg: '数据库查询失败',
-      error: err
-    }
+    return { code: -1, msg: '数据库查询失败', error: err }
   }
 }
