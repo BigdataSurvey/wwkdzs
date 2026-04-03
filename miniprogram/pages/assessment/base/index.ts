@@ -1,4 +1,3 @@
-// miniprogram/pages/assessment/base/index.ts
 Page({
   data: {
     questions: [] as any[],
@@ -25,7 +24,7 @@ Page({
   },
 
   async fetchQuestions() {
-    wx.showNavigationBarLoading(); // 用顶部原生极简小动画代替黑块
+    wx.showLoading({ title: '构建体检环境', mask: true });
     try {
       const res = await wx.cloud.callFunction({
         name: 'getQuestionnaire',
@@ -41,7 +40,7 @@ Page({
     } catch (err) {
       this.setData({ isLoading: false });
     } finally {
-      wx.hideNavigationBarLoading();
+      wx.hideLoading();
     }
   },
 
@@ -99,14 +98,14 @@ Page({
   finishAssessment(answers: any[]) {
     const totalScore = answers.reduce((sum, item) => sum + item.score, 0);
 
-    // 🚨 终极无感切换：去掉 Toast，只显示系统原生 Loading 且瞬间转场
-    wx.showNavigationBarLoading();
+    // 🚨 修复无感跳转导致的死机错觉，使用正常的 Loading
+    wx.showLoading({ title: '深度测算中...', mask: true });
 
     setTimeout(() => {
-      wx.hideNavigationBarLoading();
+      wx.hideLoading();
       wx.redirectTo({
         url: `/pages/result/index?score=${totalScore}&type=base&industryId=${this.data.industryId}`
       });
-    }, 600); // 缩短等待时间，体验更丝滑
+    }, 800);
   }
 });

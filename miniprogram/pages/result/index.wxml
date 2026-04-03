@@ -2,41 +2,44 @@
 <view class="glass-overlay"></view>
 
 <view class="page result-page">
-
   <view class="custom-nav" style="padding-top: {{statusBarHeight}}px; height: {{navHeight}}px;">
     <view class="nav-content">
-      <view class="nav-icon-btn nav-btn-left" bindtap="goBack">←</view>
+      <view class="nav-icon-btn nav-btn-left" bindtap="goHome">
+        <text class="icon-arrow">←</text>
+      </view>
       <view class="nav-title">诊断结果</view>
-      <view class="nav-icon-btn nav-btn-right" bindtap="reTest">↻</view>
+      <view class="nav-icon-btn nav-btn-right" bindtap="reTest">
+        <text class="icon-refresh">↻</text>
+      </view>
     </view>
   </view>
 
   <scroll-view scroll-y class="main-scroll" style="margin-top: {{statusBarHeight + navHeight + 20}}px;">
 
     <view class="glass-card overview-card">
-      <view class="level-badge" style="color: {{levelColor}}; background: {{levelColor}}15;">
+      <view class="level-badge" style="color: {{levelColor}}; background: {{levelBg}};">
         风险等级：{{level}}
       </view>
       <view class="score-display">
-        <text class="score-num" style="color: {{levelColor}};">{{score}}</text>
+        <text class="score-num" style="color: #F59E0B;">{{score}}</text>
         <text class="score-total">/ 100 分</text>
       </view>
       <view class="source-tag">餐饮 · 筹备期 · 基础排雷</view>
 
       <view class="action-row">
         <view class="btn-primary-glass">建议暂缓投入</view>
-        <view class="btn-secondary-glass" style="color: {{levelColor}}; background: {{levelColor}}15;">查看详细方案</view>
+        <view class="btn-secondary-glass">查看详细方案</view>
       </view>
     </view>
 
     <view class="glass-card info-card">
       <view class="card-title">📝 风险结构解读</view>
       <view class="info-block">
-        <view class="info-sub-title">💰 资金链路</view>
+        <view class="info-sub-title"><text class="info-emoji">💰</text>资金链路</view>
         <view class="card-desc">启动资金存在缺口或高杠杆，在行业平均回本期内容易发生资金链断裂。</view>
       </view>
       <view class="info-block">
-        <view class="info-sub-title">👤 操盘经验</view>
+        <view class="info-sub-title"><text class="info-emoji">👤</text>操盘经验</view>
         <view class="card-desc">跨行创业面临选址、供应链盲区，试错成本较高。</view>
       </view>
     </view>
@@ -62,7 +65,7 @@
 
     <view class="glass-card promo-card">
       <view class="promo-content">
-        <view class="promo-title">👑 深度专业诊断 PRO</view>
+        <view class="promo-title"><text class="promo-crown">👑</text> 深度专业诊断 PRO</view>
         <view class="promo-desc">获取完整建议与备选三件套</view>
       </view>
       <view class="promo-btn">解锁完整版</view>
