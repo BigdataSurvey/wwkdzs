@@ -23,36 +23,40 @@ Page({
     this.fetchQuestions();
   },
 
-  // 🚨 核心逻辑升级：向云函数发送行业/阶段参数
-  async fetchQuestions() {
-    wx.showLoading({ title: '加载个性化题库...', mask: true });
-    try {
-      const res = await wx.cloud.callFunction({
-        name: 'getQuestionnaire',
-        data: { 
-          type: 'base',
-          industryId: this.data.industryId, // 发送行业ID
-          stageKey: this.data.stageKey     // 发送阶段Key
-        }
-      });
-
-      const result = res.result as any;
-      if (result.code === 0) {
-        this.setData({
-          questions: result.data,
-          isLoading: false
-        });
-        this.updateProgress();
-      } else {
-        wx.showToast({ title: '暂无对应题库', icon: 'none' });
+// 🚨 核心逻辑升级：增强对空数据的拦截
+async fetchQuestions() {
+  wx.showLoading({ title: '加载个性化题库...', mask: true });
+  try {
+    const res = await wx.cloud.callFunction({
+      name: 'getQuestionnaire',
+      data: { 
+        type: 'base',
+        industryId: this.data.industryId,
+        stageKey: this.data.stageKey
       }
-    } catch (err) {
-      console.error('云端拉取题目失败:', err);
-      wx.showToast({ title: '网络连接异常', icon: 'none' });
-    } finally {
-      wx.hideLoading();
+    });
+
+    const result = res.result as any;
+    // 🚨 关键防线：必须保证 result.data 是一个有内容的数组
+    if (result.code === 0 && result.data && result.data.length > 0) {
+      this.setData({
+        questions: result.data,
+        isLoading: false
+      });
+      this.updateProgress();
+    } else {
+      // 如果没拿到题，优雅拦截，不要让页面变成空白
+      wx.showToast({ title: '当前行业题库建设中', icon: 'none' });
+      setTimeout(() => { wx.navigateBack() }, 1500);
     }
-  },
+  } catch (err) {
+    console.error('云端拉取题目失败:', err);
+    wx.showToast({ title: '网络连接异常', icon: 'none' });
+    setTimeout(() => { wx.navigateBack() }, 1500);
+  } finally {
+    wx.hideLoading();
+  }
+},
 
   selectOption(e: any) {
     const { optionid, score } = e.currentTarget.dataset;
