@@ -1,19 +1,42 @@
-<view class="capsule-row">
-  <view 
-    class="capsule-primary {{!selection.industryId ? 'capsule-empty pulse-infinite' : 'capsule-solid'}} {{shakeIndustry ? 'shake' : ''}}" 
-    bindtap="goSelectIndustry" 
-    hover-class="tap-scale"
-  >
-    <text class="capsule-icon">{{selection.industryId ? '🎯' : '⚠️'}}</text>
-    <text class="capsule-text">{{selectionDisplayText}}</text>
+<image class="custom-bg" src="../../../images/bg.png" mode="aspectFill"></image>
+
+<view class="page assessment-page">
+  
+  <view class="nav-header" wx:if="{{questions.length > 0}}">
+    <view class="progress-container">
+      <view class="progress-bar" style="width: {{progress}}%"></view>
+    </view>
+    <view class="step-counter">第 {{currentIndex + 1}} / {{questions.length}} 题</view>
   </view>
 
-  <view class="capsule-ghost" bindtap="goArchive" hover-class="tap-scale">
-    <text class="capsule-icon-ghost">📊</text>
-    <text class="capsule-text-ghost">档案</text>
-  </view>
-</view>
+  <view class="question-container" wx:if="{{!isLoading && questions.length > 0}}">
+    <view class="category-tag">{{questions[currentIndex].category}}</view>
+    <view class="question-title">{{questions[currentIndex].title}}</view>
 
-<view class="feature-card card-primary-light" bindtap="goBaseAssessment" hover-class="tap-scale">
-  <view class="shimmer-btn-light"><text>开始体检</text></view>
+    <view class="options-list">
+      <view 
+        class="option-card {{answers[currentIndex].optionId === item.id ? 'option-active' : ''}}" 
+        wx:for="{{questions[currentIndex].options}}" 
+        wx:key="id"
+        bindtap="selectOption"
+        data-optionid="{{item.id}}"
+        data-score="{{item.score}}"
+        hover-class="option-hover"
+      >
+        <view class="option-prefix">{{item.id}}</view>
+        <view class="option-text">{{item.text}}</view>
+        <view class="option-check" wx:if="{{answers[currentIndex].optionId === item.id}}">✓</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:if="{{!isLoading && questions.length === 0}}">
+    <view class="empty-icon">🚧</view>
+    <view class="empty-text">当前行业题库建设中...</view>
+    <view class="empty-btn" bindtap="goSelectIndustry">重新选择行业</view>
+  </view>
+
+  <view class="assessment-footer">
+    <text>🔒 您的回答将作为商业模型测算，严格保密</text>
+  </view>
 </view>
