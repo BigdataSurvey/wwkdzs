@@ -1,42 +1,37 @@
 const cloud = require('wx-server-sdk')
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
+const _ = db.command
 
 exports.main = async (event, context) => {
   try {
     const { type, industryId, stageKey } = event;
 
-    // 1. 尝试精准匹配特定行业和阶段的题库
-    let res = await db.collection('question_bank').where({
-      type: type || 'base',
-      industryId: Number(industryId), // 确保格式对齐
-      stageKey: stageKey
-    }).get();
+    // 🚨 核心提速魔法：用 _.or 一次性查出三种可能性，只消耗 1 次网络请求！
+    const res = await db.collection('question_bank').where(
+      _.or([
+        { type: type || 'base', industryId: Number(industryId), stageKey: stageKey }, // 精准匹配
+        { type: type || 'base', industryId: Number(industryId) },                     // 行业匹配
+        { _id: 'base_questions' }                                                     // 兜底匹配
+      ])
+    ).get();
 
-    // 2. 如果精准匹配没数据，降级：只匹配行业
     if (!res.data || res.data.length === 0) {
-      res = await db.collection('question_bank').where({
-        type: type || 'base',
-        industryId: Number(industryId)
-      }).get();
+      return { code: 0, msg: 'empty', data: [] };
     }
 
-    // 3. 如果连行业都没数据，终极降级：拉取兜底的通用种子题！
-    if (!res.data || res.data.length === 0) {
-      // 🚨 换用 where 查询，没查到也不会报错崩溃，只会返回空数组
-      const defaultRes = await db.collection('question_bank').where({
-        _id: 'base_questions'
-      }).get();
+    // 内存里按最高优先级提取（精准 > 行业 > 兜底）
+    const exactMatch = res.data.find(item => item.industryId === Number(industryId) && item.stageKey === stageKey);
+    const industryMatch = res.data.find(item => item.industryId === Number(industryId));
+    const defaultMatch = res.data.find(item => item._id === 'base_questions');
 
-      if (defaultRes.data && defaultRes.data.length > 0) {
-        return { code: 0, msg: 'success (default)', data: defaultRes.data[0].data };
-      } else {
-        // 如果连兜底题都没建，安全返回空数组
-        return { code: 0, msg: 'empty', data: [] };
-      }
+    const finalData = exactMatch || industryMatch || defaultMatch;
+
+    if (finalData && finalData.data) {
+      return { code: 0, msg: 'success', data: finalData.data };
+    } else {
+      return { code: 0, msg: 'empty', data: [] };
     }
-
-    return { code: 0, msg: 'success', data: res.data[0].data };
 
   } catch (error) {
     console.error('获取个性化题库失败:', error);
