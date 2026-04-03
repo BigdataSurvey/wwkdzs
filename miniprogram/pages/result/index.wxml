@@ -1,50 +1,70 @@
-<view class="page">
-  <view class="section hero-card result-hero {{result.tone === 'orange' ? 'tone-orange' : (result.tone === 'green' ? 'tone-green' : '')}}">
-    <view class="hero-title">{{result.level}}</view>
-    <view class="hero-subtitle">{{industryName}} · {{stageName}} · 基础诊断评分 {{score}}</view>
-    <view class="hero-meta">
-      <view class="hero-pill">{{result.title}}</view>
-      <view class="hero-pill">保守专业型口径</view>
+<image class="custom-bg" src="../../images/bg.png" mode="aspectFill"></image>
+<view class="glass-overlay"></view>
+
+<view class="page result-page">
+
+  <view class="custom-nav" style="padding-top: {{statusBarHeight}}px; height: {{navHeight}}px;">
+    <view class="nav-content">
+      <view class="nav-btn-left" bindtap="goHome">返回首页</view>
+      <view class="nav-title">诊断结果</view>
+      <view class="nav-btn-right" bindtap="reTest">重做</view>
     </view>
   </view>
 
-  <view class="section card panel">
-    <view class="section-title">结论摘要</view>
-    <view class="summary-text">{{result.desc}}</view>
-  </view>
+  <view class="main-content" style="margin-top: {{statusBarHeight + navHeight + 20}}px;">
 
-  <view class="section card panel">
-    <view class="section-title">三个关键维度</view>
-    <view class="dimension-item" wx:for="{{result.dimensions}}" wx:key="label">
-      <view class="dimension-label">{{item.label}}</view>
-      <view class="badge badge-blue">{{item.value}}</view>
-    </view>
-  </view>
-
-  <view class="section card panel">
-    <view class="section-title">建议先做这三件事</view>
-    <view class="action-item" wx:for="{{result.actions}}" wx:key="*this">{{index + 1}}. {{item}}</view>
-  </view>
-
-  <view class="section card panel">
-    <view class="section-title">继续往下做</view>
-    <view class="grid-2">
-      <view class="action-card" bindtap="goProfit" hover-class="tap-scale">
-        <view class="action-card-title">利润测算</view>
-        <view class="action-card-desc">先把盈亏底线算清楚</view>
+    <view class="glass-card overview-card">
+      <view class="level-badge" style="color: {{levelColor}}; background: {{levelColor}}15;">
+        风险等级：{{level}}
       </view>
-      <view class="action-card" bindtap="goGuide" hover-class="tap-scale">
-        <view class="action-card-title">避坑指南</view>
-        <view class="action-card-desc">继续看行业与阶段清单</view>
+      <view class="score-display">
+        <text class="score-num" style="color: {{levelColor}};">{{score}}</text>
+        <text class="score-total">/ 100 分</text>
       </view>
-      <view class="action-card" bindtap="goArchive" hover-class="tap-scale">
-        <view class="action-card-title">经营档案</view>
-        <view class="action-card-desc">把待执行动作挂起来</view>
+      <view class="tags-row">
+        <text class="tag-item">行业诊断</text>
+        <text class="tag-item">基础排雷</text>
       </view>
-      <view class="action-card" bindtap="goHome" hover-class="tap-scale">
-        <view class="action-card-title">返回首页</view>
-        <view class="action-card-desc">继续调整行业或重新发起</view>
+      <view class="action-row">
+        <view class="btn-primary-glass" style="background: {{levelColor}}15; color: {{levelColor}}; border-color: {{levelColor}}30;">建议暂缓投入</view>
+        <view class="btn-secondary-glass">查看详细方案</view>
       </view>
     </view>
+
+    <view class="glass-card info-card">
+      <view class="card-title">📝 风险解读</view>
+      <view class="card-desc">您的启动资金存在较大缺口或高杠杆风险，在行业平均回本周期内，极易引发资金链断裂。建议增加自有备用金储备。</view>
+    </view>
+
+    <view class="glass-card list-card">
+      <view class="card-header">
+        <view class="card-title">⚠️ 三个关键隐患</view>
+        <view class="header-link">查看全部 ›</view>
+      </view>
+      <view class="issue-item">
+        <view class="issue-dot" style="background: #FF4D4F;"></view>
+        <view class="issue-text">启动资金依赖借贷</view>
+        <view class="issue-tag" style="color: #FF4D4F; background: #FFF1F0;">偏高</view>
+      </view>
+      <view class="issue-item">
+        <view class="issue-dot" style="background: #F59E0B;"></view>
+        <view class="issue-text">行业经验不足</view>
+        <view class="issue-tag" style="color: #F59E0B; background: #FEF3C7;">较高</view>
+      </view>
+      <view class="issue-item">
+        <view class="issue-dot" style="background: #9CA3AF;"></view>
+        <view class="issue-text">选址客流风险</view>
+        <view class="issue-tag" style="color: #6B7280; background: #F3F4F6;">待评估</view>
+      </view>
+    </view>
+
+    <view class="glass-card promo-card">
+      <view class="promo-content">
+        <view class="promo-title">👑 深度专业诊断 PRO</view>
+        <view class="promo-desc">获取完整建议与备选三件套</view>
+      </view>
+      <view class="promo-btn">解锁完整版</view>
+    </view>
+
   </view>
 </view>

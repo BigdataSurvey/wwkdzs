@@ -1,4 +1,3 @@
-// miniprogram/pages/assessment/base/index.ts
 Page({
   data: {
     questions: [] as any[],
@@ -8,25 +7,19 @@ Page({
     isLoading: true,
     industryId: 0,
     stageKey: '',
-    navHeight: 88, // 自定义导航栏高度
-    statusBarHeight: 20 // 状态栏高度
+    navHeight: 88,
+    statusBarHeight: 20
   },
 
   onLoad(options: any) {
     const { industryId, stageKey } = options;
-    this.setData({
-      industryId: Number(industryId) || 0,
-      stageKey: stageKey || ''
-    });
+    this.setData({ industryId: Number(industryId) || 0, stageKey: stageKey || '' });
 
-    // 动态计算顶部导航栏高度
-    const sysInfo = wx.getSystemInfoSync();
+    // 🚨 修复 API 弃用警告：使用最新的 getWindowInfo
+    const windowInfo = wx.getWindowInfo();
     const menuButton = wx.getMenuButtonBoundingClientRect();
-    const navHeight = menuButton.height + (menuButton.top - sysInfo.statusBarHeight) * 2;
-    this.setData({
-      statusBarHeight: sysInfo.statusBarHeight,
-      navHeight: navHeight
-    });
+    const navHeight = menuButton.height + (menuButton.top - windowInfo.statusBarHeight) * 2;
+    this.setData({ statusBarHeight: windowInfo.statusBarHeight, navHeight });
 
     this.fetchQuestions();
   },
@@ -46,58 +39,46 @@ Page({
         this.setData({ isLoading: false });
       }
     } catch (err) {
-      console.error('拉取失败:', err);
       this.setData({ isLoading: false });
     } finally {
       wx.hideLoading();
     }
   },
 
-  // 🚨 顶部“保存退出”按钮逻辑
   saveAndExit() {
     wx.showModal({
       title: '保存进度',
       content: '已保存当前答题进度，下次进入可继续作答',
       confirmText: '退出',
       confirmColor: '#2E6BFF',
-      success: (res) => {
-        if (res.confirm) {
-          wx.navigateBack({ delta: 1 });
-        }
-      }
+      success: (res) => { if (res.confirm) wx.navigateBack({ delta: 1 }); }
     });
   },
 
   goSelectIndustry() {
-    wx.navigateBack({
-      delta: 1,
-      fail: () => { wx.redirectTo({ url: '/pages/industry-stage/index' }); }
-    });
+    wx.navigateBack({ fail: () => { wx.redirectTo({ url: '/pages/industry-stage/index' }); }});
   },
 
   selectOption(e: any) {
     const { optionid, score } = e.currentTarget.dataset;
     const { questions, currentIndex, answers } = this.data;
-
     const newAnswers = [...answers];
     newAnswers[currentIndex] = {
       questionId: questions[currentIndex].id,
       optionId: optionid,
       score: score
     };
-
-    // 添加轻微震动反馈
     wx.vibrateShort({ type: 'light' });
     this.setData({ answers: newAnswers });
-
-    // 给用户 400ms 看清楚卡片变蓝和圆圈打钩的极爽反馈
-    setTimeout(() => {
-      this.nextQuestion();
-    }, 400);
+    // 🚨 取消自动跳题，等待用户点击“下一题”
   },
 
   nextQuestion() {
     const { currentIndex, questions, answers } = this.data;
+    if (!answers[currentIndex]) {
+      wx.showToast({ title: '请先选择一个选项', icon: 'none' });
+      return;
+    }
     if (currentIndex < questions.length - 1) {
       this.setData({ currentIndex: currentIndex + 1 }, () => { this.updateProgress(); });
     } else {
