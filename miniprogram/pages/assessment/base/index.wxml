@@ -1,42 +1,64 @@
 <image class="custom-bg" src="../../../images/bg.png" mode="aspectFill"></image>
 
+<view class="glass-overlay"></view>
+
 <view class="page assessment-page">
-  
-  <view class="nav-header" wx:if="{{questions.length > 0}}">
-    <view class="progress-container">
-      <view class="progress-bar" style="width: {{progress}}%"></view>
+
+  <view class="custom-nav" style="padding-top: {{statusBarHeight}}px; height: {{navHeight}}px;">
+    <view class="nav-content">
+      <view class="nav-title">基础风险诊断</view>
+      <view class="nav-btn-right" bindtap="saveAndExit">保存退出</view>
     </view>
-    <view class="step-counter">第 {{currentIndex + 1}} / {{questions.length}} 题</view>
   </view>
 
-  <view class="question-container" wx:if="{{!isLoading && questions.length > 0}}">
-    <view class="category-tag">{{questions[currentIndex].category}}</view>
-    <view class="question-title">{{questions[currentIndex].title}}</view>
+  <view class="main-content" style="margin-top: {{statusBarHeight + navHeight + 20}}px;">
 
-    <view class="options-list">
-      <view 
-        class="option-card {{answers[currentIndex].optionId === item.id ? 'option-active' : ''}}" 
-        wx:for="{{questions[currentIndex].options}}" 
-        wx:key="id"
-        bindtap="selectOption"
-        data-optionid="{{item.id}}"
-        data-score="{{item.score}}"
-        hover-class="option-hover"
-      >
-        <view class="option-prefix">{{item.id}}</view>
-        <view class="option-text">{{item.text}}</view>
-        <view class="option-check" wx:if="{{answers[currentIndex].optionId === item.id}}">✓</view>
+    <view class="progress-section" wx:if="{{questions.length > 0}}">
+      <view class="progress-container-pro">
+        <view class="progress-bar-pro" style="width: {{progress}}%"></view>
+      </view>
+      <view class="step-counter-pro">第 <text class="step-num">{{currentIndex + 1}}</text> 题 / 共 {{questions.length}} 题</view>
+    </view>
+
+    <view class="question-container" wx:if="{{!isLoading && questions.length > 0}}">
+
+      <view class="category-badge">
+        <text class="badge-dot"></text>
+        {{questions[currentIndex].category}}
+      </view>
+
+      <view class="question-title-pro">{{questions[currentIndex].title}}</view>
+
+      <view class="options-list-pro">
+        <view
+          class="option-card-pro {{answers[currentIndex].optionId === item.id ? 'option-active-pro' : ''}}"
+          wx:for="{{questions[currentIndex].options}}"
+          wx:key="id"
+          bindtap="selectOption"
+          data-optionid="{{item.id}}"
+          data-score="{{item.score}}"
+          hover-class="option-hover-pro"
+        >
+          <view class="radio-box">
+            <view class="radio-inner" wx:if="{{answers[currentIndex].optionId === item.id}}">✓</view>
+          </view>
+          <view class="option-text-pro">{{item.text}}</view>
+        </view>
       </view>
     </view>
-  </view>
 
-  <view class="empty-state" wx:if="{{!isLoading && questions.length === 0}}">
-    <view class="empty-icon">🚧</view>
-    <view class="empty-text">当前行业题库建设中...</view>
-    <view class="empty-btn" bindtap="goSelectIndustry">重新选择行业</view>
-  </view>
+    <view class="empty-state" wx:if="{{!isLoading && questions.length === 0}}">
+      <view class="empty-icon">🚧</view>
+      <view class="empty-text">当前行业题库建设中...</view>
+      <view class="empty-btn" bindtap="goSelectIndustry">重新选择行业</view>
+    </view>
 
-  <view class="assessment-footer">
-    <text>🔒 您的回答将作为商业模型测算，严格保密</text>
+    <view class="footer-safe-area" wx:if="{{questions.length > 0}}">
+      <view class="safe-tips-pro">
+        <text class="safe-tips-icon">🔒</text>
+        <text>您的回答将作为商业模型测算，严格保密</text>
+      </view>
+    </view>
+
   </view>
 </view>
