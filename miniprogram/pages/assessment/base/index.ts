@@ -1,3 +1,4 @@
+// miniprogram/pages/assessment/base/index.ts
 Page({
   data: {
     questions: [] as any[],
@@ -15,7 +16,6 @@ Page({
     const { industryId, stageKey } = options;
     this.setData({ industryId: Number(industryId) || 0, stageKey: stageKey || '' });
 
-    // 🚨 修复 API 弃用警告：使用最新的 getWindowInfo
     const windowInfo = wx.getWindowInfo();
     const menuButton = wx.getMenuButtonBoundingClientRect();
     const navHeight = menuButton.height + (menuButton.top - windowInfo.statusBarHeight) * 2;
@@ -25,7 +25,7 @@ Page({
   },
 
   async fetchQuestions() {
-    wx.showLoading({ title: '加载个性化题库...', mask: true });
+    wx.showNavigationBarLoading(); // 用顶部原生极简小动画代替黑块
     try {
       const res = await wx.cloud.callFunction({
         name: 'getQuestionnaire',
@@ -41,7 +41,7 @@ Page({
     } catch (err) {
       this.setData({ isLoading: false });
     } finally {
-      wx.hideLoading();
+      wx.hideNavigationBarLoading();
     }
   },
 
@@ -62,23 +62,26 @@ Page({
   selectOption(e: any) {
     const { optionid, score } = e.currentTarget.dataset;
     const { questions, currentIndex, answers } = this.data;
+
+    if (answers[currentIndex] && answers[currentIndex].optionId === optionid) return;
+
     const newAnswers = [...answers];
     newAnswers[currentIndex] = {
       questionId: questions[currentIndex].id,
       optionId: optionid,
       score: score
     };
+
     wx.vibrateShort({ type: 'light' });
     this.setData({ answers: newAnswers });
-    // 🚨 取消自动跳题，等待用户点击“下一题”
+
+    setTimeout(() => {
+      this.nextQuestion();
+    }, 400);
   },
 
   nextQuestion() {
     const { currentIndex, questions, answers } = this.data;
-    if (!answers[currentIndex]) {
-      wx.showToast({ title: '请先选择一个选项', icon: 'none' });
-      return;
-    }
     if (currentIndex < questions.length - 1) {
       this.setData({ currentIndex: currentIndex + 1 }, () => { this.updateProgress(); });
     } else {
@@ -95,12 +98,15 @@ Page({
 
   finishAssessment(answers: any[]) {
     const totalScore = answers.reduce((sum, item) => sum + item.score, 0);
-    wx.showLoading({ title: '正在生成排雷报告...' });
+
+    // 🚨 终极无感切换：去掉 Toast，只显示系统原生 Loading 且瞬间转场
+    wx.showNavigationBarLoading();
+
     setTimeout(() => {
-      wx.hideLoading();
+      wx.hideNavigationBarLoading();
       wx.redirectTo({
         url: `/pages/result/index?score=${totalScore}&type=base&industryId=${this.data.industryId}`
       });
-    }, 1500);
+    }, 600); // 缩短等待时间，体验更丝滑
   }
 });
