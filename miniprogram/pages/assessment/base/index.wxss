@@ -1,19 +1,57 @@
-/* 红色报警态：空胶囊样式 */
-.capsule-empty { 
-  background: rgba(255, 77, 79, 0.05) !important; 
-  border: 2rpx solid rgba(255, 77, 79, 0.3) !important; 
-}
-.capsule-empty .capsule-text { color: #FF4D4F !important; }
+/* ======== 全局背景层 ======== */
+.custom-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; }
+.glass-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); pointer-events: none; }
+.assessment-page { position: relative; z-index: 2; min-height: 100vh; display: flex; flex-direction: column; }
 
-/* 🚨 经典抖动动画 */
-@keyframes shake-horizontal {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-8rpx); }
-  20%, 40%, 60%, 80% { transform: translateX(8rpx); }
-}
+/* ======== 顶部磨砂自定义导航 ======== */
+.custom-nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 99; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1rpx solid rgba(0, 0, 0, 0.05); }
+.nav-content { height: 100%; display: flex; align-items: center; justify-content: center; position: relative; padding: 0 32rpx; }
+.nav-title { font-size: 34rpx; font-weight: 700; color: #111; }
+.nav-btn-right { position: absolute; right: 32rpx; font-size: 26rpx; color: #6B7280; font-weight: 600; padding: 12rpx 24rpx; background: rgba(0,0,0,0.04); border-radius: 999rpx; }
 
-.shake { 
-  animation: shake-horizontal 0.4s ease-in-out; 
-  background: #FFF1F0 !important;
-  border-color: #FF4D4F !important;
+.main-content { padding: 0 40rpx 100rpx; flex: 1; }
+
+/* ======== 进度条区 ======== */
+.progress-section { margin-bottom: 60rpx; }
+.progress-container-pro { height: 16rpx; background: rgba(0, 0, 0, 0.04); border-radius: 999rpx; overflow: hidden; margin-bottom: 16rpx; box-shadow: inset 0 2rpx 6rpx rgba(0,0,0,0.02); }
+.progress-bar-pro { height: 100%; background: linear-gradient(90deg, #2E6BFF 0%, #60A5FA 100%); border-radius: 999rpx; transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 2rpx 10rpx rgba(46, 107, 255, 0.3); }
+.step-counter-pro { font-size: 26rpx; color: #666; font-weight: 500; }
+.step-num { font-size: 34rpx; font-weight: 800; color: #2E6BFF; margin: 0 4rpx; font-family: 'DIN Alternate', sans-serif; }
+
+/* ======== 题目核心区 ======== */
+.category-badge { display: inline-flex; align-items: center; padding: 8rpx 24rpx; background: rgba(46, 107, 255, 0.08); color: #2E6BFF; font-size: 24rpx; font-weight: 700; border-radius: 12rpx; margin-bottom: 32rpx; border: 1rpx solid rgba(46, 107, 255, 0.1); }
+.badge-dot { width: 12rpx; height: 12rpx; background: #2E6BFF; border-radius: 50%; margin-right: 12rpx; box-shadow: 0 0 8rpx rgba(46,107,255,0.6); }
+
+.question-title-pro { font-size: 46rpx; font-weight: 900; color: #111; line-height: 1.4; margin-bottom: 60rpx; letter-spacing: 1rpx; }
+
+/* ======== 选项卡片 ======== */
+.options-list-pro { display: flex; flex-direction: column; gap: 32rpx; }
+.option-card-pro {
+  display: flex; align-items: center; padding: 40rpx 36rpx;
+  background: #FFFFFF; border-radius: 28rpx;
+  border: 2rpx solid transparent; box-shadow: 0 16rpx 48rpx rgba(0, 0, 0, 0.03);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
+.option-hover-pro { transform: scale(0.97); box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.02); }
+
+/* 选中态：蓝边框 + 极其轻微的浅蓝底 */
+.option-active-pro { border-color: #2E6BFF; background: #F5F9FF; box-shadow: 0 16rpx 48rpx rgba(46, 107, 255, 0.1); }
+
+/* 单选框：空心圆 -> 实心勾 */
+.radio-box { width: 44rpx; height: 44rpx; border-radius: 50%; border: 3rpx solid #D1D5DB; margin-right: 28rpx; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; background: #FFF; box-sizing: border-box; }
+.option-active-pro .radio-box { border-color: transparent; background: #2E6BFF; transform: scale(1.05); box-shadow: 0 4rpx 12rpx rgba(46, 107, 255, 0.4); }
+.radio-inner { color: #FFF; font-size: 28rpx; font-weight: 900; }
+
+.option-text-pro { flex: 1; font-size: 32rpx; color: #333; font-weight: 500; transition: color 0.2s; line-height: 1.5; }
+.option-active-pro .option-text-pro { color: #2E6BFF; font-weight: 700; }
+
+/* ======== 底部安全背书 ======== */
+.footer-safe-area { margin-top: 80rpx; display: flex; flex-direction: column; align-items: center; }
+.safe-tips-pro { display: inline-flex; align-items: center; background: rgba(255,255,255,0.6); padding: 16rpx 32rpx; border-radius: 999rpx; border: 1rpx solid rgba(255,255,255,0.9); font-size: 24rpx; color: #6B7280; font-weight: 600; box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.03); }
+.safe-tips-icon { color: #8B5CF6; margin-right: 12rpx; font-size: 28rpx; margin-top: -2rpx; }
+
+/* 空状态 */
+.empty-state { text-align: center; padding-top: 200rpx; }
+.empty-icon { font-size: 100rpx; margin-bottom: 30rpx; }
+.empty-text { font-size: 30rpx; color: #666; margin-bottom: 50rpx; }
+.empty-btn { display: inline-block; background: #2E6BFF; color: #FFF; padding: 20rpx 60rpx; border-radius: 999rpx; font-weight: bold; }
