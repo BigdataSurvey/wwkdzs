@@ -17,7 +17,7 @@ Page({
 
   // 🚨 核心修复：调用云函数获取最新配置
   async fetchCloudConfig() {
-    wx.showLoading({ title: '拉取配置中...', mask: true })
+    wx.showLoading({ title: '加载专业题库中', mask: true })
     try {
       const res = await wx.cloud.callFunction({ name: 'getSelectionConfig' })
       const result = res.result as any

@@ -1,38 +1,115 @@
+/* 背景 */
+.custom-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; }
+.tools-page { position: relative; z-index: 1; min-height: 100vh; padding: 24rpx 32rpx 0; }
+
+/* ======== Hero ======== */
 .tools-hero {
-  background: linear-gradient(135deg, rgba(8, 108, 146, 0.95) 0%, rgba(46, 107, 255, 0.88) 100%);
-}
-
-.tool-list-card {
-  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.08) 100%);
-  border-radius: 30rpx;
-  padding: 28rpx;
-  margin-bottom: 18rpx;
-  box-shadow: 0 18rpx 44rpx rgba(0,0,0,0.16);
-  border: 1rpx solid rgba(255,255,255,0.08);
-}
-
-.tool-list-top {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 14rpx;
+  justify-content: space-between;
+  padding: 44rpx 40rpx;
+  margin-bottom: 32rpx;
+  background: linear-gradient(135deg, #2E6BFF 0%, #1A4BFF 100%);
+  border-radius: 32rpx;
+  box-shadow: 0 16rpx 48rpx rgba(46,107,255,0.25);
+  overflow: hidden;
+  position: relative;
+}
+.hero-left { flex: 1; }
+.hero-title { font-size: 40rpx; font-weight: 800; color: #FFFFFF; margin-bottom: 8rpx; }
+.hero-desc { font-size: 26rpx; color: rgba(255,255,255,0.8); font-weight: 500; }
+.hero-icon-wrap {
+  width: 88rpx; height: 88rpx;
+  background: rgba(255,255,255,0.18);
+  border-radius: 24rpx;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.hero-icon-text { font-size: 44rpx; }
+
+/* ======== 工具卡片 ======== */
+.tool-card {
+  position: relative;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1rpx solid rgba(255,255,255,0.95);
+  border-radius: 32rpx;
+  padding: 36rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0,0,0,0.03);
+  transition: transform 0.15s ease;
+  overflow: hidden;
+}
+.tool-card-press { transform: scale(0.97); box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.02); }
+.tool-card-highlight {
+  border-color: rgba(46,107,255,0.12);
+  box-shadow: 0 12rpx 40rpx rgba(46,107,255,0.06);
+}
+.tool-card-new {
+  border-color: rgba(139,92,246,0.15);
+  box-shadow: 0 12rpx 40rpx rgba(139,92,246,0.06);
 }
 
-.tool-list-title {
-  font-size: 34rpx;
-  font-weight: 700;
-  color: #FFFFFF;
+.tool-card-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 24rpx;
 }
 
-.tool-list-desc {
+.tool-icon-wrap {
+  width: 80rpx; height: 80rpx;
+  border-radius: 22rpx;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.tool-icon-text { font-size: 38rpx; }
+
+.tool-info { flex: 1; min-width: 0; }
+.tool-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 10rpx;
+}
+.tool-title { font-size: 34rpx; font-weight: 700; color: #111; }
+.tool-tag {
+  font-size: 22rpx;
+  font-weight: 600;
+  padding: 4rpx 16rpx;
+  border-radius: 999rpx;
+  flex-shrink: 0;
+}
+.tool-desc {
   font-size: 26rpx;
-  line-height: 1.7;
-  color: rgba(219, 229, 245, 0.76);
-  margin-bottom: 22rpx;
+  color: #888;
+  line-height: 1.6;
+  font-weight: 400;
 }
 
-.tool-list-link {
-  color: #BFD4FF;
-  font-size: 28rpx;
-  font-weight: 700;
+/* PRO 提示条 */
+.tool-pro-hint {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid rgba(0,0,0,0.04);
+}
+.pro-hint-icon { font-size: 24rpx; }
+.pro-hint-text { font-size: 22rpx; color: #8B5CF6; font-weight: 500; }
+
+/* 新功能角标 */
+.new-badge {
+  position: absolute;
+  top: 24rpx;
+  right: 24rpx;
+  background: linear-gradient(135deg, #FF2D55, #FF375F);
+  color: #FFF;
+  font-size: 18rpx;
+  font-weight: 800;
+  padding: 4rpx 14rpx;
+  border-radius: 999rpx;
+  letter-spacing: 1rpx;
+  box-shadow: 0 4rpx 12rpx rgba(255,45,85,0.3);
 }

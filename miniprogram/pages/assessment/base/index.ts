@@ -1,57 +1,134 @@
+const PROGRESS_KEY = 'exam_progress_base';
+
 Page({
   data: {
     questions: [] as any[],
     currentIndex: 0,
     answers: [] as any[],
+    currentSelectedId: '',
     progress: 0,
     isLoading: true,
     industryId: 0,
     stageKey: '',
     navHeight: 88,
-    statusBarHeight: 20
+    statusBarHeight: 20,
+    contentMarginTop: 128
   },
 
   onLoad(options: any) {
     const { industryId, stageKey } = options;
     this.setData({ industryId: Number(industryId) || 0, stageKey: stageKey || '' });
 
-    const windowInfo = wx.getWindowInfo();
-    const menuButton = wx.getMenuButtonBoundingClientRect();
-    const navHeight = menuButton.height + (menuButton.top - windowInfo.statusBarHeight) * 2;
-    this.setData({ statusBarHeight: windowInfo.statusBarHeight, navHeight });
+    try {
+      const windowInfo = wx.getWindowInfo();
+      const menuButton = wx.getMenuButtonBoundingClientRect();
+      if (menuButton && menuButton.height) {
+        const navHeight = menuButton.height + (menuButton.top - windowInfo.statusBarHeight) * 2;
+        this.setData({
+          statusBarHeight: windowInfo.statusBarHeight,
+          navHeight: navHeight,
+          contentMarginTop: windowInfo.statusBarHeight + navHeight + 20
+        });
+      }
+    } catch (e) {
+      console.error('状态栏获取失败', e);
+    }
 
     this.fetchQuestions();
   },
 
   async fetchQuestions() {
-    wx.showLoading({ title: '构建体检环境', mask: true });
+    wx.showLoading({ title: '正在加载专业题库...', mask: true });
+
     try {
       const res = await wx.cloud.callFunction({
         name: 'getQuestionnaire',
         data: { type: 'base', industryId: this.data.industryId, stageKey: this.data.stageKey }
       });
+
       const result = res.result as any;
+
       if (result && result.code === 0 && result.data && result.data.length > 0) {
-        this.setData({ questions: result.data, isLoading: false });
+        const safeQuestions = JSON.parse(JSON.stringify(result.data));
+
+        this.setData({
+          questions: safeQuestions,
+          isLoading: false,
+          currentSelectedId: ''
+        });
+
+        this.restoreProgress(safeQuestions);
         this.updateProgress();
       } else {
         this.setData({ isLoading: false });
+        wx.showModal({ title: '题库为空', content: '未查到题目，请检查数据库配置！', showCancel: false });
       }
-    } catch (err) {
+    } catch (err: any) {
       this.setData({ isLoading: false });
+      wx.showModal({ title: '网络异常', content: '加载失败：' + (err.message || '未知异常'), showCancel: false });
     } finally {
       wx.hideLoading();
     }
   },
 
+  restoreProgress(questions: any[]) {
+    try {
+      const saved = wx.getStorageSync(PROGRESS_KEY);
+      if (!saved || !saved.answers) return;
+
+      const sameIndustry = String(saved.industryId) === String(this.data.industryId);
+      const sameStage = (saved.stageKey || '') === (this.data.stageKey || '');
+
+      if (!sameIndustry || !sameStage) {
+        wx.removeStorageSync(PROGRESS_KEY);
+        return;
+      }
+
+      if (saved.answers.length > 0 && saved.currentIndex < questions.length) {
+        this.setData({
+          answers: saved.answers,
+          currentIndex: saved.currentIndex,
+          currentSelectedId: saved.answers[saved.currentIndex]
+            ? saved.answers[saved.currentIndex].optionId
+            : ''
+        });
+
+        wx.showToast({ title: '已恢复上次进度', icon: 'success', duration: 1500 });
+      }
+    } catch (e) {
+      console.warn('恢复进度失败', e);
+    }
+  },
+
+  saveProgress() {
+    try {
+      wx.setStorageSync(PROGRESS_KEY, {
+        industryId: String(this.data.industryId),
+        stageKey: this.data.stageKey || '',
+        currentIndex: this.data.currentIndex,
+        answers: this.data.answers,
+        timestamp: Date.now()
+      });
+    } catch (e) {
+      console.warn('保存进度失败', e);
+    }
+  },
+
+  clearProgress() {
+    try {
+      wx.removeStorageSync(PROGRESS_KEY);
+      wx.removeStorageSync('unfinished_exam');
+    } catch (e) {}
+  },
+
   saveAndExit() {
-    wx.showModal({
-      title: '保存进度',
-      content: '已保存当前答题进度，下次进入可继续作答',
-      confirmText: '退出',
-      confirmColor: '#2E6BFF',
-      success: (res) => { if (res.confirm) wx.navigateBack({ delta: 1 }); }
-    });
+    this.saveProgress();
+    wx.setStorageSync('unfinished_exam', true);
+
+    wx.showToast({ title: '进度已保存', icon: 'success', duration: 1200 });
+    setTimeout(() => {
+      wx.navigateBack({ delta: 1 });
+    }, 800);
   },
 
   goSelectIndustry() {
@@ -60,9 +137,9 @@ Page({
 
   selectOption(e: any) {
     const { optionid, score } = e.currentTarget.dataset;
-    const { questions, currentIndex, answers } = this.data;
+    const { questions, currentIndex, answers, currentSelectedId } = this.data;
 
-    if (answers[currentIndex] && answers[currentIndex].optionId === optionid) return;
+    if (currentSelectedId === optionid) return;
 
     const newAnswers = [...answers];
     newAnswers[currentIndex] = {
@@ -71,18 +148,25 @@ Page({
       score: score
     };
 
-    wx.vibrateShort({ type: 'light' });
-    this.setData({ answers: newAnswers });
+    this.setData({
+      answers: newAnswers,
+      currentSelectedId: optionid
+    });
 
-    setTimeout(() => {
-      this.nextQuestion();
-    }, 400);
+    setTimeout(() => { this.nextQuestion(); }, 400);
   },
 
   nextQuestion() {
     const { currentIndex, questions, answers } = this.data;
     if (currentIndex < questions.length - 1) {
-      this.setData({ currentIndex: currentIndex + 1 }, () => { this.updateProgress(); });
+      const nextIndex = currentIndex + 1;
+      this.setData({
+        currentIndex: nextIndex,
+        currentSelectedId: answers[nextIndex] ? answers[nextIndex].optionId : ''
+      }, () => {
+        this.updateProgress();
+        this.saveProgress();
+      });
     } else {
       this.finishAssessment(answers);
     }
@@ -97,9 +181,9 @@ Page({
 
   finishAssessment(answers: any[]) {
     const totalScore = answers.reduce((sum, item) => sum + item.score, 0);
+    wx.showLoading({ title: '生成报告中...', mask: true });
 
-    // 🚨 修复无感跳转导致的死机错觉，使用正常的 Loading
-    wx.showLoading({ title: '深度测算中...', mask: true });
+    this.clearProgress();
 
     setTimeout(() => {
       wx.hideLoading();

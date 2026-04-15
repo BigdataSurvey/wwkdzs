@@ -2,75 +2,138 @@
 <view class="glass-overlay"></view>
 
 <view class="page result-page">
-  <view class="custom-nav" style="padding-top: {{statusBarHeight}}px; height: {{navHeight}}px;">
-    <view class="nav-content">
-      <view class="nav-icon-btn nav-btn-left" bindtap="goHome">
-        <text class="icon-arrow">←</text>
-      </view>
-      <view class="nav-title">诊断结果</view>
-      <view class="nav-icon-btn nav-btn-right" bindtap="reTest">
-        <text class="icon-refresh">↻</text>
-      </view>
+  <!-- 顶部工具栏 -->
+  <view class="toolbar">
+    <view class="toolbar-btn toolbar-btn-ghost" bindtap="reTest" hover-class="toolbar-btn-active">
+      <text class="toolbar-icon">↻</text>
+      <text class="toolbar-label">重新排雷</text>
     </view>
+    <button class="toolbar-btn toolbar-btn-primary" open-type="share" hover-class="toolbar-btn-active">
+      <text class="toolbar-icon">👥</text>
+      <text class="toolbar-label">分享</text>
+    </button>
   </view>
 
-  <scroll-view scroll-y class="main-scroll" style="margin-top: {{statusBarHeight + navHeight + 20}}px;">
+  <scroll-view scroll-y enhanced show-scrollbar="{{false}}" class="main-scroll">
 
-    <view class="glass-card overview-card">
-      <view class="level-badge" style="color: {{levelColor}}; background: {{levelBg}};">
+    <!-- 核心概览卡 -->
+    <view class="overview-card" style="border-color: {{riskBorderColor}};">
+      <view class="level-badge" style="color: {{levelColor}}; background: {{levelBg}}; border-color: {{levelColor}};">
         风险等级：{{level}}
       </view>
+
       <view class="score-display">
-        <text class="score-num" style="color: #F59E0B;">{{score}}</text>
+        <text class="score-num" style="color: {{levelColor}};">{{displayScore}}</text>
         <text class="score-total">/ 100 分</text>
       </view>
-      <view class="source-tag">餐饮 · 筹备期 · 基础排雷</view>
 
-      <view class="action-row">
-        <view class="btn-primary-glass">建议暂缓投入</view>
-        <view class="btn-secondary-glass">查看详细方案</view>
+      <view class="source-tag">{{sourceLabel}}</view>
+
+      <!-- 纯文字结论 + 行动指引 -->
+      <view class="conclusion-block">
+        <view class="conclusion-line">
+          <text class="conclusion-icon">{{score < 60 ? '⚠️' : (score >= 80 ? '✅' : '⚠️')}}</text>
+          <text class="conclusion-text" style="color: {{levelColor}};">结论：{{conclusion}}</text>
+        </view>
+        <view class="advice-line">
+          <text class="advice-text">建议：{{advice}}</text>
+        </view>
       </view>
     </view>
 
-    <view class="glass-card info-card">
-      <view class="card-title">📝 风险结构解读</view>
-      <view class="info-block">
-        <view class="info-sub-title"><text class="info-emoji">💰</text>资金链路</view>
-        <view class="card-desc">启动资金存在缺口或高杠杆，在行业平均回本期内容易发生资金链断裂。</view>
+    <!-- 风险结构解读（折叠面板） -->
+    <view class="content-card">
+      <view class="card-title-row">
+        <text class="card-title">📊 风险结构解读</text>
       </view>
-      <view class="info-block">
-        <view class="info-sub-title"><text class="info-emoji">👤</text>操盘经验</view>
-        <view class="card-desc">跨行创业面临选址、供应链盲区，试错成本较高。</view>
+
+      <view class="risk-panel {{item.expanded ? 'risk-panel-open' : ''}}"
+            wx:for="{{riskStructure}}" wx:key="title"
+            data-idx="{{index}}" bindtap="toggleRiskPanel">
+        <view class="risk-panel-header">
+          <view class="risk-panel-left">
+            <text class="risk-panel-icon">{{item.icon}}</text>
+            <text class="risk-panel-title">{{item.title}}</text>
+          </view>
+          <view class="risk-panel-right">
+            <text class="risk-panel-tag {{item.tagClass}}">{{item.tag}}</text>
+            <text class="risk-panel-arrow {{item.expanded ? 'arrow-up' : ''}}">›</text>
+          </view>
+        </view>
+        <view class="risk-panel-body" wx:if="{{item.expanded}}">
+          <text class="risk-panel-desc">{{item.desc}}</text>
+        </view>
       </view>
     </view>
 
-    <view class="glass-card list-card">
-      <view class="card-header">
-        <view class="card-title">⚠️ 关键隐患</view>
-        <view class="header-link">查看全部 ›</view>
+    <!-- 关键隐患（排序 + 遮罩） -->
+    <view class="content-card">
+      <view class="card-title-row">
+        <text class="card-title">⚠️ 关键隐患</text>
       </view>
-      <view class="issue-item">
-        <view class="issue-text">启动资金依赖借贷</view>
-        <view class="issue-tag tag-high">偏高</view>
+
+      <view wx:for="{{issues}}" wx:key="idx" class="issue-item-wrap">
+        <!-- 前2个完整展示，第3个起需要解锁 -->
+        <view wx:if="{{index < 2 || issuesUnlocked}}" class="issue-item">
+          <view class="issue-header">
+            <view class="issue-idx">{{item.idx}}</view>
+            <text class="issue-tag {{item.tagClass}}">{{item.tagIcon}} {{item.tag}}</text>
+          </view>
+          <view class="issue-name">{{item.text}}</view>
+          <view class="issue-detail">
+            <text class="issue-consequence">后果：{{item.consequence}}</text>
+            <text class="issue-suggestion">建议：{{item.suggestion}}</text>
+          </view>
+        </view>
+
+        <!-- 遮罩层 -->
+        <view wx:if="{{index >= 2 && !issuesUnlocked}}" class="issue-item issue-locked">
+          <view class="issue-header">
+            <view class="issue-idx issue-idx-locked">{{item.idx}}</view>
+            <text class="issue-tag itag-grey">⚪ 未解锁</text>
+          </view>
+          <view class="issue-name issue-name-blur">{{item.text}}</view>
+          <view class="issue-lock-mask">
+            <text class="lock-mask-text">🔒 分享给好友即可解锁全部隐患</text>
+          </view>
+        </view>
       </view>
-      <view class="issue-item">
-        <view class="issue-text">行业经验不足</view>
-        <view class="issue-tag tag-mid">较高</view>
-      </view>
-      <view class="issue-item">
-        <view class="issue-text">选址客流预估</view>
-        <view class="issue-tag tag-grey">待评估</view>
+
+      <view class="unlock-share-row" wx:if="{{!issuesUnlocked}}">
+        <button class="unlock-share-btn" open-type="share" hover-class="unlock-share-btn-active">
+          <text>👥 分享解锁全部隐患</text>
+        </button>
       </view>
     </view>
 
-    <view class="glass-card promo-card">
-      <view class="promo-content">
-        <view class="promo-title"><text class="promo-crown">👑</text> 深度专业诊断 PRO</view>
-        <view class="promo-desc">获取完整建议与备选三件套</view>
+    <!-- PRO 升级卡 -->
+    <view class="pro-card" bindtap="onUnlockPro" hover-class="pro-card-active">
+      <view class="pro-content">
+        <view class="pro-title">
+          <text class="pro-crown">👑</text>
+          <text> 深度专业诊断 PRO</text>
+        </view>
+        <view class="pro-desc">获取完整建议与备选三件套</view>
       </view>
-      <view class="promo-btn">解锁完整版</view>
+      <view class="pro-btn">解锁完整版</view>
     </view>
 
-    <view style="height: 60rpx;"></view>
+    <view style="height: 160rpx;"></view>
   </scroll-view>
+
+  <!-- 底部固定操作栏 -->
+  <view class="bottom-bar">
+    <view class="bottom-bar-btn" bindtap="onSaveImage" hover-class="bottom-bar-btn-active">
+      <text class="bottom-bar-icon">📷</text>
+      <text class="bottom-bar-label">保存结果</text>
+    </view>
+    <button class="bottom-bar-btn bottom-bar-share-btn" open-type="share" hover-class="bottom-bar-btn-active">
+      <text class="bottom-bar-icon">👥</text>
+      <text class="bottom-bar-label">分享好友</text>
+    </button>
+    <view class="bottom-bar-btn bottom-bar-pro-btn" bindtap="onUnlockPro" hover-class="bottom-bar-btn-active">
+      <text class="bottom-bar-icon">🔓</text>
+      <text class="bottom-bar-label">解锁 PRO</text>
+    </view>
+  </view>
 </view>

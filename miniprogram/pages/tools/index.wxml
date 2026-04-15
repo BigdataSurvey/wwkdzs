@@ -1,15 +1,47 @@
-<view class="page">
-  <view class="section hero-card tools-hero">
-    <view class="hero-title">工具中心</view>
-    <view class="hero-subtitle">少讲说明，多用步骤感和角标做 UI 引导。先用工具判断，再做决策。</view>
+<image class="custom-bg" src="../../images/bg.png" mode="aspectFill"></image>
+
+<view class="page tools-page">
+
+  <!-- Hero 区域 -->
+  <view class="tools-hero">
+    <view class="hero-left">
+      <view class="hero-title">经营工具箱</view>
+      <view class="hero-desc">用数据做判断，用工具做决策</view>
+    </view>
+    <view class="hero-icon-wrap">
+      <text class="hero-icon-text">🧰</text>
+    </view>
   </view>
 
-  <view class="section tool-list-card" wx:for="{{primaryTools}}" wx:key="title" data-path="{{item.path}}" bindtap="openTool" hover-class="tap-scale">
-    <view class="tool-list-top">
-      <view class="tool-list-title">{{item.title}}</view>
-      <view class="badge {{item.tag === '参考' ? 'badge-gray' : (item.tag === '延伸' ? 'badge-orange' : 'badge-blue')}}">{{item.tag}}</view>
+  <!-- 工具卡片列表 -->
+  <view class="tool-card {{item.isNew ? 'tool-card-new' : ''}} {{item.highlight ? 'tool-card-highlight' : ''}}"
+        wx:for="{{tools}}" wx:key="id"
+        data-path="{{item.path}}"
+        bindtap="openTool"
+        hover-class="tool-card-press">
+
+    <view class="tool-card-body">
+      <view class="tool-icon-wrap" style="background: {{item.iconBg}};">
+        <text class="tool-icon-text">{{item.icon}}</text>
+      </view>
+      <view class="tool-info">
+        <view class="tool-title-row">
+          <text class="tool-title">{{item.title}}</text>
+          <text class="tool-tag" style="color: {{item.tagColor}}; background: {{item.tagBg}};">{{item.tag}}</text>
+        </view>
+        <view class="tool-desc">{{item.desc}}</view>
+      </view>
     </view>
-    <view class="tool-list-desc">{{item.desc}}</view>
-    <view class="tool-list-link">进入工具</view>
+
+    <!-- PRO 提示（如有） -->
+    <view class="tool-pro-hint" wx:if="{{item.proHint}}">
+      <text class="pro-hint-icon">👑</text>
+      <text class="pro-hint-text">{{item.proHint}}</text>
+    </view>
+
+    <!-- 新功能角标 -->
+    <view class="new-badge" wx:if="{{item.isNew}}">NEW</view>
   </view>
+
+  <view style="height: 200rpx;"></view>
 </view>

@@ -2,43 +2,75 @@
 .custom-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; opacity: 1; }
 .home-page { position: relative; z-index: 1; min-height: 100vh; padding: 40rpx 32rpx 0; overflow: hidden; box-sizing: border-box; }
 
-.headline-section { margin-top: 10rpx; margin-bottom: 50rpx; }
+.headline-section { margin-top: 10rpx; margin-bottom: 40rpx; }
 
-/* 🚨 终极平衡点：干净的果味蓝字 + 高透玻璃边框（不抢戏但精致） */
-.headline-sub {
-  display: inline-block;
-  font-size: 26rpx;
-  color: #2E6BFF; /* 回归品牌蓝，和主题完美契合 */
-  font-weight: 600; /* 字重微微调轻，更显秀气精致 */
-  letter-spacing: 2rpx;
+/* === 副标题外层：控制最大宽度，防止长文案撑满 === */
+.headline-sub-wrap {
   margin-bottom: 20rpx;
-  padding: 8rpx 28rpx;
-  border-radius: 999rpx;
-
-  /* 经典的 iOS 控制中心玻璃材质 */
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-
-  /* 灵魂细节：加一圈细细的纯白高光描边，清透的立体感瞬间就出来了 */
-  border: 1rpx solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.03); /* 极其微弱的阴影，仅为托底 */
+  max-width: 92%;
 }
 
-/* 注入灵魂：极具 iOS 灵性的发光小蓝点指示器 (纯CSS实现，无需改WXML) */
+/* 副标题胶囊：降低视觉权重，不抢主标题风头 */
+.headline-sub {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 24rpx;
+  color: rgba(46, 107, 255, 0.75);
+  font-weight: 500;
+  letter-spacing: 1rpx;
+  padding: 6rpx 24rpx;
+  border-radius: 999rpx;
+
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+
+  border: 1rpx solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.02), inset 0 1rpx 0 rgba(255,255,255,0.6);
+}
+
 .headline-sub::before {
   content: '';
   display: inline-block;
-  width: 10rpx;
-  height: 10rpx;
+  width: 8rpx;
+  height: 8rpx;
   border-radius: 50%;
-  background: #2E6BFF;
-  margin-right: 12rpx;
-  box-shadow: 0 0 8rpx rgba(46, 107, 255, 0.6);
+  background: rgba(46, 107, 255, 0.6);
+  margin-right: 10rpx;
+  vertical-align: middle;
+  box-shadow: 0 0 6rpx rgba(46, 107, 255, 0.4);
 }
 
-.headline-main { font-size: 64rpx; font-weight: 900; color: #111111; letter-spacing: 2rpx; line-height: 1.3; }
-.hl-gradient { background: linear-gradient(120deg, #1A4BFF 0%, #5C90FF 100%); -webkit-background-clip: text; color: transparent; text-shadow: 0 4rpx 12rpx rgba(46, 107, 255, 0.2); }
+/* === 主标题：flex 布局确保「先摸清你的」+「盈利底牌」同行 === */
+.headline-main {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: nowrap;
+  font-size: 56rpx;
+  font-weight: 900;
+  color: #111111;
+  letter-spacing: 2rpx;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+.hl-prefix {
+  flex-shrink: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+
+.hl-gradient {
+  background: linear-gradient(120deg, #1A4BFF 0%, #5C90FF 100%);
+  -webkit-background-clip: text;
+  color: transparent;
+  font-size: 66rpx;
+  font-weight: inherit;
+}
 
 .capsule-row { display: flex; gap: 20rpx; margin-bottom: 60rpx; }
 
@@ -88,7 +120,7 @@
   position: relative; background: linear-gradient(120deg, rgba(245,247,255,0.9) 0%, rgba(255,255,255,1) 50%, rgba(250,245,255,0.9) 100%);
   background-size: 200% 200%; border-radius: 32rpx; padding: 36rpx; margin-bottom: 32rpx; border: 2rpx solid rgba(255, 255, 255, 0.8);
   box-shadow: 0 16rpx 48rpx rgba(139, 92, 246, 0.08), inset 0 4rpx 12rpx rgba(255,255,255,0.8); overflow: hidden;
-  animation: gradient-shift 6s ease infinite, attract-shake-light 4s infinite ease-in-out;
+  animation: gradient-shift 6s ease infinite;
 }
 @keyframes sweep-light { 0%, 60% { left: -100%; opacity: 0; } 65% { opacity: 1; } 100% { left: 200%; opacity: 0; } }
 .shimmer-sweep { position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); z-index: 1; pointer-events: none; animation: sweep-light 4s infinite; }
@@ -97,10 +129,11 @@
 .icon-lock-pro { background: linear-gradient(135deg, #F5F3FF 0%, #E0E7FF 100%); box-shadow: inset 0 4rpx 10rpx #FFFFFF, 0 8rpx 20rpx rgba(139, 92, 246, 0.15); width: 100rpx; height: 100rpx; border-radius: 28rpx; display: flex; align-items: center; justify-content: center; }
 .pro-badge-apple { display: inline-block; font-size: 20rpx; background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 50%, #EC4899 100%); color: #FFFFFF; padding: 2rpx 14rpx; border-radius: 8rpx; font-weight: 800; vertical-align: middle; margin-left: 8rpx; margin-top: -4rpx; box-shadow: 0 4rpx 12rpx rgba(139, 92, 246, 0.3); }
 .lock-tag-apple { display: inline-flex; align-items: center; margin-top: 16rpx; font-size: 22rpx; color: #8B5CF6; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); padding: 8rpx 20rpx; border-radius: 999rpx; font-weight: 600; box-shadow: 0 4rpx 16rpx rgba(139, 92, 246, 0.08); border: 1rpx solid rgba(255,255,255,0.9); }
+.unlock-tag-apple { display: inline-flex; align-items: center; margin-top: 16rpx; font-size: 22rpx; color: #52C41A; background: rgba(82,196,26,0.06); backdrop-filter: blur(10px); padding: 8rpx 20rpx; border-radius: 999rpx; font-weight: 600; box-shadow: 0 4rpx 16rpx rgba(82,196,26,0.08); border: 1rpx solid rgba(82,196,26,0.15); }
 
 /* AI 魔法流光卡片 */
 @keyframes ai-gradient-flow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-.card-ai-magic { background: linear-gradient(120deg, #FFFFFF, #F8F5FF, #F0F7FF, #FFFFFF); background-size: 300% 300%; animation: ai-gradient-flow 8s ease infinite; border: 1rpx solid rgba(139, 92, 246, 0.15); box-shadow: 0 16rpx 48rpx rgba(139, 92, 246, 0.06); overflow: hidden; }
+.card-ai-magic { background: linear-gradient(120deg, #FFFFFF, #F8F5FF, #F0F7FF, #FFFFFF); background-size: 300% 300%; animation: ai-gradient-flow 8s ease infinite, attract-shake-light 4s infinite ease-in-out; border: 1rpx solid rgba(139, 92, 246, 0.15); box-shadow: 0 16rpx 48rpx rgba(139, 92, 246, 0.06); overflow: hidden; }
 .ai-text-gradient { background: linear-gradient(135deg, #4F46E5 0%, #9333EA 100%); -webkit-background-clip: text; color: transparent; }
 .icon-ai-magic-base { background: linear-gradient(135deg, #E0E7FF 0%, #FAE8FF 100%); box-shadow: inset 0 4rpx 10rpx #FFFFFF, 0 8rpx 20rpx rgba(147, 51, 234, 0.15); }
 .live-tag { display: inline-flex; align-items: center; gap: 10rpx; margin-top: 16rpx; background: rgba(255, 255, 255, 0.95); padding: 8rpx 22rpx; border-radius: 999rpx; font-size: 22rpx; color: #4F46E5; font-weight: 700; border: 1rpx solid rgba(79, 70, 229, 0.15); box-shadow: 0 4rpx 12rpx rgba(79, 70, 229, 0.08); }
@@ -111,3 +144,69 @@
 .new-badge-magic { position: absolute; top: 28rpx; right: 28rpx; background: linear-gradient(135deg, #FF2D55 0%, #FF375F 100%); color: #FFFFFF; font-size: 20rpx; font-weight: 800; padding: 6rpx 16rpx; border-radius: 999rpx; z-index: 10; box-shadow: 0 4rpx 12rpx rgba(255, 45, 85, 0.35); overflow: hidden; }
 .new-badge-magic::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%); transform: skewX(-20deg); animation: badge-sweep-flash 3s infinite; }
 @keyframes badge-sweep-flash { 0%, 75% { left: -100%; } 90%, 100% { left: 200%; } }
+
+/* ======== 翻牌动效 ======== */
+.flip-container {
+  display: inline-flex;
+  align-items: baseline;
+  perspective: 800px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.flip-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flip-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-front, .flip-back {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  white-space: nowrap;
+}
+
+.flip-front {
+  position: relative;
+}
+
+.flip-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotateY(180deg);
+}
+
+/* 翻牌点击涟漪反馈 */
+.flip-container::after {
+  content: '';
+  position: absolute;
+  inset: -8rpx -16rpx;
+  border-radius: 16rpx;
+  background: rgba(46, 107, 255, 0);
+  transition: background 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.flip-container:active::after {
+  background: rgba(46, 107, 255, 0.06);
+}
+
+/* ======== 响应式适配 ======== */
+/* iPhone SE / 小屏 (≤ 375px 逻辑宽) */
+@media screen and (max-width: 375px) {
+  .headline-main { font-size: 48rpx; letter-spacing: 1rpx; }
+  .hl-gradient { font-size: 56rpx; }
+  .headline-sub { font-size: 22rpx; }
+}
+
+/* 大屏 Pro Max (≥ 428px) */
+@media screen and (min-width: 428px) {
+  .headline-main { font-size: 60rpx; }
+  .hl-gradient { font-size: 72rpx; }
+}
