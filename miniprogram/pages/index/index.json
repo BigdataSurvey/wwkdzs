@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "稳稳开店助手"
+  "navigationBarTitleText": "稳稳开店助手",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
 }

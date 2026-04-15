@@ -1,3 +1,5 @@
+const PROGRESS_KEY = 'exam_progress_base';
+
 Page({
   data: {
     questions: [] as any[],
@@ -36,7 +38,7 @@ Page({
   },
 
   async fetchQuestions() {
-    wx.showLoading({ title: '远端拉取真题...', mask: true });
+    wx.showLoading({ title: '正在加载专业题库...', mask: true });
 
     try {
       const res = await wx.cloud.callFunction({
@@ -54,6 +56,8 @@ Page({
           isLoading: false,
           currentSelectedId: ''
         });
+
+        this.restoreProgress(safeQuestions);
         this.updateProgress();
       } else {
         this.setData({ isLoading: false });
@@ -61,20 +65,70 @@ Page({
       }
     } catch (err: any) {
       this.setData({ isLoading: false });
-      wx.showModal({ title: '网络崩溃', content: '拉取失败：' + (err.message || '未知异常'), showCancel: false });
+      wx.showModal({ title: '网络异常', content: '加载失败：' + (err.message || '未知异常'), showCancel: false });
     } finally {
       wx.hideLoading();
     }
   },
 
+  restoreProgress(questions: any[]) {
+    try {
+      const saved = wx.getStorageSync(PROGRESS_KEY);
+      if (!saved || !saved.answers) return;
+
+      const sameIndustry = String(saved.industryId) === String(this.data.industryId);
+      const sameStage = (saved.stageKey || '') === (this.data.stageKey || '');
+
+      if (!sameIndustry || !sameStage) {
+        wx.removeStorageSync(PROGRESS_KEY);
+        return;
+      }
+
+      if (saved.answers.length > 0 && saved.currentIndex < questions.length) {
+        this.setData({
+          answers: saved.answers,
+          currentIndex: saved.currentIndex,
+          currentSelectedId: saved.answers[saved.currentIndex]
+            ? saved.answers[saved.currentIndex].optionId
+            : ''
+        });
+
+        wx.showToast({ title: '已恢复上次进度', icon: 'success', duration: 1500 });
+      }
+    } catch (e) {
+      console.warn('恢复进度失败', e);
+    }
+  },
+
+  saveProgress() {
+    try {
+      wx.setStorageSync(PROGRESS_KEY, {
+        industryId: String(this.data.industryId),
+        stageKey: this.data.stageKey || '',
+        currentIndex: this.data.currentIndex,
+        answers: this.data.answers,
+        timestamp: Date.now()
+      });
+    } catch (e) {
+      console.warn('保存进度失败', e);
+    }
+  },
+
+  clearProgress() {
+    try {
+      wx.removeStorageSync(PROGRESS_KEY);
+      wx.removeStorageSync('unfinished_exam');
+    } catch (e) {}
+  },
+
   saveAndExit() {
-    wx.showModal({
-      title: '保存进度',
-      content: '已保存当前答题进度',
-      confirmText: '退出',
-      confirmColor: '#2E6BFF',
-      success: (res) => { if (res.confirm) wx.navigateBack({ delta: 1 }); }
-    });
+    this.saveProgress();
+    wx.setStorageSync('unfinished_exam', true);
+
+    wx.showToast({ title: '进度已保存', icon: 'success', duration: 1200 });
+    setTimeout(() => {
+      wx.navigateBack({ delta: 1 });
+    }, 800);
   },
 
   goSelectIndustry() {
@@ -94,8 +148,6 @@ Page({
       score: score
     };
 
-    // 🚨 这里去掉了 wx.vibrateShort 物理震动，不再抖动！
-
     this.setData({
       answers: newAnswers,
       currentSelectedId: optionid
@@ -111,7 +163,10 @@ Page({
       this.setData({
         currentIndex: nextIndex,
         currentSelectedId: answers[nextIndex] ? answers[nextIndex].optionId : ''
-      }, () => { this.updateProgress(); });
+      }, () => {
+        this.updateProgress();
+        this.saveProgress();
+      });
     } else {
       this.finishAssessment(answers);
     }
@@ -127,6 +182,8 @@ Page({
   finishAssessment(answers: any[]) {
     const totalScore = answers.reduce((sum, item) => sum + item.score, 0);
     wx.showLoading({ title: '生成报告中...', mask: true });
+
+    this.clearProgress();
 
     setTimeout(() => {
       wx.hideLoading();
