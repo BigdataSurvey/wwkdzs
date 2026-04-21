@@ -181,10 +181,21 @@ Page({
 
   finishAssessment(answers: any[]) {
     const totalScore = answers.reduce((sum, item) => sum + item.score, 0);
-    wx.showLoading({ title: '生成报告中...', mask: true });
 
-    this.clearProgress();
+    // 🚨 [深度分析后新增]：构建 AI 诊断病历
+    // 从当前页面的 questions 数据中，匹配出用户选中的选项文字
+    const qaRecord = answers.map((ans, index) => {
+      const question = this.data.questions.find(q => q.id === ans.questionId);
+      const option = question ? question.options.find((o: any) => o.id === ans.optionId) : null;
+      return `第${index + 1}题：${question ? question.title : '未知问题'}\n用户回答：${option ? option.text : '未知选项'}`;
+    }).join('\n\n');
 
+    // 存入缓存，供结果页读取
+    wx.setStorageSync('latest_qa_record', qaRecord);
+
+    wx.showLoading({ title: '正在生成排雷报告...', mask: true });
+
+    // 跳转时带上基础参数
     setTimeout(() => {
       wx.hideLoading();
       wx.redirectTo({

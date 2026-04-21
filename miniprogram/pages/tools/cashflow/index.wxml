@@ -1,0 +1,14 @@
+<image class="custom-bg" src="../../../images/bg.png" mode="aspectFill"></image>
+
+<view class="page cashflow-page">
+  <view class="coming-soon-card">
+    <view class="coming-icon">💸</view>
+    <view class="coming-title">现金流模拟器</view>
+    <view class="coming-desc">模拟未来12个月现金流走势，提前预警断裂风险</view>
+    <view class="coming-status">
+      <view class="coming-dot"></view>
+      <text>功能开发中，即将上线</text>
+    </view>
+    <view class="coming-btn" bindtap="onSubscribe" hover-class="coming-btn-active">上线提醒我</view>
+  </view>
+</view>

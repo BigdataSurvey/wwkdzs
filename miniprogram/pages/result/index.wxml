@@ -2,7 +2,6 @@
 <view class="glass-overlay"></view>
 
 <view class="page result-page">
-  <!-- 顶部工具栏 -->
   <view class="toolbar">
     <view class="toolbar-btn toolbar-btn-ghost" bindtap="reTest" hover-class="toolbar-btn-active">
       <text class="toolbar-icon">↻</text>
@@ -16,7 +15,6 @@
 
   <scroll-view scroll-y enhanced show-scrollbar="{{false}}" class="main-scroll">
 
-    <!-- 核心概览卡 -->
     <view class="overview-card" style="border-color: {{riskBorderColor}};">
       <view class="level-badge" style="color: {{levelColor}}; background: {{levelBg}}; border-color: {{levelColor}};">
         风险等级：{{level}}
@@ -29,7 +27,6 @@
 
       <view class="source-tag">{{sourceLabel}}</view>
 
-      <!-- 纯文字结论 + 行动指引 -->
       <view class="conclusion-block">
         <view class="conclusion-line">
           <text class="conclusion-icon">{{score < 60 ? '⚠️' : (score >= 80 ? '✅' : '⚠️')}}</text>
@@ -41,7 +38,25 @@
       </view>
     </view>
 
-    <!-- 风险结构解读（折叠面板） -->
+    <view class="content-card ai-card">
+      <view class="card-title-row ai-header">
+        <text class="card-title ai-title">✨ AI 参谋深度测算</text>
+        <view class="ai-tag">通义大模型驱动</view>
+      </view>
+
+      <view class="ai-loading" wx:if="{{aiLoading}}">
+        <view class="scanning-box">
+          <view class="scanning-light"></view>
+        </view>
+        <text class="ai-loading-text">正在为您生成亿级参数的商业诊断...</text>
+      </view>
+
+      <view class="ai-content" wx:if="{{!aiLoading}}">
+        <text class="ai-text">{{displayAiReport}}</text>
+        <text class="ai-cursor" wx:if="{{aiReport !== displayAiReport}}">|</text>
+      </view>
+    </view>
+
     <view class="content-card">
       <view class="card-title-row">
         <text class="card-title">📊 风险结构解读</text>
@@ -66,14 +81,12 @@
       </view>
     </view>
 
-    <!-- 关键隐患（排序 + 遮罩） -->
     <view class="content-card">
       <view class="card-title-row">
         <text class="card-title">⚠️ 关键隐患</text>
       </view>
 
       <view wx:for="{{issues}}" wx:key="idx" class="issue-item-wrap">
-        <!-- 前2个完整展示，第3个起需要解锁 -->
         <view wx:if="{{index < 2 || issuesUnlocked}}" class="issue-item">
           <view class="issue-header">
             <view class="issue-idx">{{item.idx}}</view>
@@ -86,7 +99,6 @@
           </view>
         </view>
 
-        <!-- 遮罩层 -->
         <view wx:if="{{index >= 2 && !issuesUnlocked}}" class="issue-item issue-locked">
           <view class="issue-header">
             <view class="issue-idx issue-idx-locked">{{item.idx}}</view>
@@ -106,7 +118,6 @@
       </view>
     </view>
 
-    <!-- PRO 升级卡 -->
     <view class="pro-card" bindtap="onUnlockPro" hover-class="pro-card-active">
       <view class="pro-content">
         <view class="pro-title">
@@ -121,7 +132,6 @@
     <view style="height: 160rpx;"></view>
   </scroll-view>
 
-  <!-- 底部固定操作栏 -->
   <view class="bottom-bar">
     <view class="bottom-bar-btn" bindtap="onSaveImage" hover-class="bottom-bar-btn-active">
       <text class="bottom-bar-icon">📷</text>
